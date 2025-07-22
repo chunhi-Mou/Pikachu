@@ -22,7 +22,7 @@ namespace LevelDesignTool
         private GameObject prefab;
         private Vector2 guiCellSize = new Vector2(40f, 40f);
         private int[,] matrix;
-        private Dictionary<Vector2Int, GameGrid.Interface.ILevelUnitGrid2d> unitLookup = new();
+        private Dictionary<Vector2Int, ILevelUnit> unitLookup = new();
         private Vector2 scroll;
         #endregion
         
@@ -159,10 +159,17 @@ namespace LevelDesignTool
                     obj.transform.position = worldPos;
                     obj.name = $"{levelName}_({x},{y})";
                         
-                    if (obj.TryGetComponent<GameGrid.Interface.ILevelUnitGrid2d>(out var unit))
+#if UNITY_EDITOR
+                    ILevelUnit unit = obj.GetComponent<ILevelUnit>();
+                    if (unit == null)
                     {
-                        unit.SetCellType(type);
+                        var adapter = obj.AddComponent<GameTileEditorAdapter>();
+                        unit = adapter;
                     }
+
+                    unit?.SetCellType(type);
+#endif
+
                 } 
             }
         }
