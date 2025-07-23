@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -6,11 +7,13 @@ public class BoosterController : MonoBehaviour
 {
     public void ShuffleButtonClick()
     {
+        if (!GameManager.Instance.UseShuffle()) return; 
         SoundManager.Instance.PlayFx(FxID.Shuffle);
         ShuffleTiles();
     }
     public void HintButtonClick()
     {
+        if (!GameManager.Instance.UseHint()) return;
         SoundManager.Instance.PlayFx(FxID.Hint);
         FindHint();
     }

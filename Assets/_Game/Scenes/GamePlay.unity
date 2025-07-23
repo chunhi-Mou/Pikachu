@@ -153,6 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelTime: 60
+  maxShuffleUse: 1
+  maxHintUse: 1
 --- !u!4 &39137464
 Transform:
   m_ObjectHideFlags: 0

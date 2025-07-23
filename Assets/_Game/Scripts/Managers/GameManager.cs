@@ -21,7 +21,46 @@ public class GameManager : Singleton<GameManager>
     private int score;
     public event Action<float> OnTimerUpdate;
     public event Action<int> OnScoreUpdate;
+    
+    [Header("Booster Settings")]
+    [SerializeField] private int maxShuffleUse = 1;
+    [SerializeField] private int maxHintUse = 1;
 
+    public int ShuffleUse { get; private set; }
+    public int HintUse { get; private set; }
+
+    public event Action<int> OnShuffleUsed;
+    public event Action<int> OnHintUsed;
+
+    public void ResetBoosters()
+    {
+        ShuffleUse = maxShuffleUse;
+        HintUse = maxHintUse;
+    }
+
+    public bool UseShuffle()
+    {
+        if (ShuffleUse <= 0) return false;
+        ShuffleUse--;
+        OnShuffleUsed?.Invoke(ShuffleUse);
+        return true;
+    }
+
+    public bool UseHint()
+    {
+        if (HintUse <= 0) return false;
+        HintUse--;
+        OnHintUsed?.Invoke(HintUse);
+        return true;
+    }
+    public void ResetTotalScore()
+    {
+        PlayerPrefs.DeleteKey(GameCONST.SCORE);
+    }
+    public int GetTotalScore()
+    {
+        return PlayerPrefs.GetInt(GameCONST.SCORE, 0);
+    }
     private void Awake()
     {
         //tranh viec nguoi choi cham da diem vao man hinh
@@ -42,8 +81,10 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        //TODO: Setup lai
         //ChangeState(GameState.MainMenu);
         //IManager.Instance.OpenUI<CanvasMainMenu>();
+        ResetBoosters();
         ChangeState(GameState.GamePlay);
         UIManager.Instance.OpenUI<CanvasGamePlay>();
         timer = levelTime;
@@ -89,14 +130,21 @@ public class GameManager : Singleton<GameManager>
     {
         ChangeState(GameState.Finish);
         UIManager.Instance.CloseUI<CanvasGamePlay>(0f);
-
+        SaveTotalScore(score);
         if (isVictory)
         {
-            UIManager.Instance.OpenUI<CanvasVictory>().SetBaseInfo(score, ((int)timer).ToString());
+            UIManager.Instance.OpenUI<CanvasVictory>().SetBaseInfo(GetTotalScore(), ((int)timer).ToString());
         }
         else
         {
             UIManager.Instance.OpenUI<CanvasFail>().SetBaseScore(score);
         }
+    }
+    private void SaveTotalScore(int currentScore)
+    {
+        int totalScore = PlayerPrefs.GetInt(GameCONST.SCORE, 0);
+        totalScore += currentScore;
+        PlayerPrefs.SetInt(GameCONST.SCORE, totalScore);
+        PlayerPrefs.Save();
     }
 }
