@@ -23,7 +23,6 @@ public class InputHandler : MonoBehaviour
             if (hit.collider != null)
             {
                 GameEvents.OnTileClicked?.Invoke(worldPos);
-                Debug.Log(hit.collider.gameObject.name);
             }
         }
     }

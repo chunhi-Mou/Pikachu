@@ -92,7 +92,7 @@ public class GameManager : Singleton<GameManager>
 
         if (isVictory)
         {
-            UIManager.Instance.OpenUI<CanvasVictory>().SetBaseInfo(score, timer.ToString());
+            UIManager.Instance.OpenUI<CanvasVictory>().SetBaseInfo(score, ((int)timer).ToString());
         }
         else
         {

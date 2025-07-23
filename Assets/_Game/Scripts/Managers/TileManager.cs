@@ -5,6 +5,7 @@ using UnityEngine;
 public class TileManager : Singleton<TileManager>
 {
     [SerializeField] TileVisualController tileVisualController;
+    [SerializeField] private int addedScore = 5;
     private int width;
     private int height;
     private Vector2 cellSize;
@@ -90,7 +91,6 @@ public class TileManager : Singleton<TileManager>
 
     private void OnTileClicked(Vector2 worldPosition)
     {
-        Debug.Log("OnTileClicked");
         Vector2Int cellPos = GridUtils.WorldToGrid(cellSize, origin, worldPosition);
         if (!IsInBounds(cellPos))
         {
@@ -140,13 +140,8 @@ public class TileManager : Singleton<TileManager>
             
             HandleTileMatched(tileA);
             HandleTileMatched(tileB);
-            
-            if (IsWin())
-            {
-                //TODO: Chờ hiệu ứng xong mới Win
-                GameManager.Instance.EndGame(true);
-            }
         }
+        GameManager.Instance.AddScore(addedScore);
     }
     private void CheckWhenFoundMatched()
     {
@@ -156,9 +151,16 @@ public class TileManager : Singleton<TileManager>
         tile2 = null;
     }
 
+    private void OnWinHandler()
+    {
+        if (IsWin())
+        {
+            GameManager.Instance.EndGame(true);
+        }
+    }
     private void HandleTileMatched(GameTile tile)
     {
-        tile.HandleMatch();
+        tile.HandleMatch(OnWinHandler);
         TileTypeDic[tile.TileType].Remove(tile.Position);
         Tiles[tile.Position.y, tile.Position.x] = null;
         if (TileTypeDic[tile.TileType].Count == 0) // Không còn cặp nào

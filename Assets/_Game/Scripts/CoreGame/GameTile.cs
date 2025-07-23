@@ -37,9 +37,9 @@ public class GameTile : MonoBehaviour
         visual.SetSelected(false);
     }
 
-    public void HandleMatch()
+    public void HandleMatch(Action OnFinished)
     {
-        visual.PlayMatchEffect(OnDespawn);
+        visual.PlayMatchEffect(OnFinished,OnDespawn);
     }
 
     private void OnDespawn()
