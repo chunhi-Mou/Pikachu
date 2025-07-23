@@ -6,12 +6,12 @@ public class BoosterController : MonoBehaviour
 {
     public void ShuffleButtonClick()
     {
-        //TODO: SoundManager.Instance.PlayFx(FxID.Shuffle);
+        SoundManager.Instance.PlayFx(FxID.Shuffle);
         ShuffleTiles();
     }
     public void HintButtonClick()
     {
-        //TODO: SoundManager.Instance.PlayFx(FxID.Hint);
+        SoundManager.Instance.PlayFx(FxID.Hint);
         FindHint();
     }
     private void FindHint()

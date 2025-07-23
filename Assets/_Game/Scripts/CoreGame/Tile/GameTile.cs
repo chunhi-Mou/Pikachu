@@ -28,7 +28,7 @@ public class GameTile : MonoBehaviour
 
     public void HandleSelected()
     {
-        //SoundManager.Instance.PlayFx(FxID.TileSelect);
+        SoundManager.Instance.PlayFx(FxID.TileSelect);
         visual.SetSelected(true);
     }
 
