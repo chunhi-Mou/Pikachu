@@ -29,20 +29,22 @@ public class GameManager : Singleton<GameManager>
     public int ShuffleUse { get; private set; }
     public int HintUse { get; private set; }
 
-    public event Action<int> OnShuffleUsed;
-    public event Action<int> OnHintUsed;
+    public event Action<int> OnShuffleCntUpdate;
+    public event Action<int> OnHintCntUpdate;
 
     public void ResetBoosters()
     {
         ShuffleUse = maxShuffleUse;
         HintUse = maxHintUse;
+        OnShuffleCntUpdate?.Invoke(ShuffleUse);
+        OnHintCntUpdate?.Invoke(HintUse);
     }
 
     public bool UseShuffle()
     {
         if (ShuffleUse <= 0) return false;
         ShuffleUse--;
-        OnShuffleUsed?.Invoke(ShuffleUse);
+        OnShuffleCntUpdate?.Invoke(ShuffleUse);
         return true;
     }
 
@@ -50,7 +52,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (HintUse <= 0) return false;
         HintUse--;
-        OnHintUsed?.Invoke(HintUse);
+        OnHintCntUpdate?.Invoke(HintUse);
         return true;
     }
     public void ResetTotalScore()
@@ -84,10 +86,7 @@ public class GameManager : Singleton<GameManager>
         //TODO: Setup lai
         //ChangeState(GameState.MainMenu);
         //IManager.Instance.OpenUI<CanvasMainMenu>();
-        ResetBoosters();
-        ChangeState(GameState.GamePlay);
-        UIManager.Instance.OpenUI<CanvasGamePlay>();
-        timer = levelTime;
+        StartGame();
     }
 
     private void Update()
@@ -107,17 +106,16 @@ public class GameManager : Singleton<GameManager>
     public void StartGame()
     {
         ChangeState(GameState.GamePlay);
-
         score = 0;
         timer = levelTime;
-
-        // Cập nhật giao diện lúc bắt đầu
-        OnScoreUpdate?.Invoke(score);
-        OnTimerUpdate?.Invoke(timer);
-
         // Mở màn hình chơi game
         UIManager.Instance.CloseAllUI();
         UIManager.Instance.OpenUI<CanvasGamePlay>();
+        
+        // Cập nhật giao diện lúc bắt đầu
+        OnScoreUpdate?.Invoke(score);
+        OnTimerUpdate?.Invoke(timer);
+        ResetBoosters();
     }
     public void AddScore(int amount)
     {

@@ -155,14 +155,6 @@ MonoBehaviour:
   scoreText: {fileID: 7151403895323958193}
   timerText: {fileID: 6830648102529425395}
   timeSlider: {fileID: 8696144286658125820}
-  countShuffleUsed: {fileID: 5038737118937910331}
-  countHintUsed: {fileID: 7432332578860880381}
-  hintButton: {fileID: 5299531397658623037}
-  shuffleButton: {fileID: 7961597183739130111}
-  shuffleCntIcon: {fileID: 5097647542818038571}
-  hintCntIcon: {fileID: 4264922790332411339}
-  shuffleIcon: {fileID: 1877008930806302186}
-  hintIcon: {fileID: 9171334871484666699}
 --- !u!1 &684049302327909523
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,6 +242,7 @@ GameObject:
   - component: {fileID: 433361906729787759}
   - component: {fileID: 5459599975232051403}
   - component: {fileID: 5299531397658623037}
+  - component: {fileID: 8487731130531462862}
   m_Layer: 5
   m_Name: Hint Button
   m_TagString: Untagged
@@ -372,6 +365,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8487731130531462862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713819885380160945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51c6aceeb4f4e41429daa210a1e66541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 5299531397658623037}
+  icon: {fileID: 9171334871484666699}
+  countIcon: {fileID: 4264922790332411339}
+  buttonShiftY: -6
+  countHintUsed: {fileID: 7432332578860880381}
 --- !u!1 &2981076043551709061
 GameObject:
   m_ObjectHideFlags: 0
@@ -1368,6 +1378,7 @@ GameObject:
   - component: {fileID: 8829850131321471012}
   - component: {fileID: 616168652050144861}
   - component: {fileID: 7961597183739130111}
+  - component: {fileID: 1512165509924055290}
   m_Layer: 5
   m_Name: Shuffle Button
   m_TagString: Untagged
@@ -1490,6 +1501,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1512165509924055290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6944588244244454006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09105dc22e3c59143aac18ad47f4ca93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 7961597183739130111}
+  icon: {fileID: 1877008930806302186}
+  countIcon: {fileID: 5097647542818038571}
+  buttonShiftY: -6
+  countShuffleUsed: {fileID: 5038737118937910331}
 --- !u!1 &6952888549811066975
 GameObject:
   m_ObjectHideFlags: 0

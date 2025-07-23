@@ -54,6 +54,7 @@ public class LevelManager : Singleton<LevelManager>
         OnDespawn();
         OnLoadLevel(++currentLevel);
         OnInit();
+        GameManager.Instance.StartGame();
     }
     #region Grid Handler
 
