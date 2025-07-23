@@ -11,7 +11,7 @@ namespace LevelDesignTool
 
         #region Setup Variables
         
-        private string levelName = "Level";
+        private string levelName = "Level_";
         private Vector3 Origin => GridUtils.CalOrigin(gridSize, cellSize);
         private Vector2Int gridSize = new Vector2Int(1, 1);
         private Vector2 cellSize = new Vector2(1f, 1f);
@@ -61,9 +61,10 @@ namespace LevelDesignTool
                     }
                     if (GUILayout.Button("Load JSON LevelData"))
                     {
-                        Data<int> data = JsonUtils.Load<int>(levelName); //TODO: Nên gán mảng Luôn
-                        this.gridSize = new Vector2Int(data.grid.Rows, data.grid.Cols);
-                        this.matrix = new int[gridSize.x, gridSize.y];
+                        Data<int> data = JsonUtils.Load<int>(levelName);
+                        // data.grid.Rows : chiều cao (y), data.grid.Cols: chiều rộng (x)
+                        this.gridSize = new Vector2Int(data.grid.Cols, data.grid.Rows);
+                        this.matrix = new int[gridSize.y, gridSize.x];
                         this.matrix = GridData<int>.ConvertGridDataTo2DArray(data.grid);
                     }
                     DrawMatrixWithBoxes();
@@ -74,12 +75,12 @@ namespace LevelDesignTool
         #endregion
 
         #region Matrix With Boxes
-
+        
         private void DrawMatrixWithBoxes()
         {
-            if (matrix == null || matrix.GetLength(0) != gridSize.x || matrix.GetLength(1) != gridSize.y)
-                matrix = new int[gridSize.x, gridSize.y];
-            
+            if (matrix == null || matrix.GetLength(0) != gridSize.y || matrix.GetLength(1) != gridSize.x)
+                matrix = new int[gridSize.y, gridSize.x];
+
             EditorGUILayout.LabelField("MATRIX DATA TYPE", EditorStyles.boldLabel);
             GUIStyle centeredStyle = new GUIStyle(EditorStyles.numberField)
             {
@@ -92,14 +93,13 @@ namespace LevelDesignTool
                 EditorGUILayout.BeginHorizontal();
                 for (int x = 0; x < gridSize.x; x++)
                 {
-                    int oldValue = matrix[x, y];
+                    int oldValue = matrix[y, x];
                     int newValue = EditorGUILayout.IntField(oldValue, centeredStyle,
                         GUILayout.Width(guiCellSize.x), GUILayout.Height(guiCellSize.x));
-                    
+
                     if (newValue != oldValue)
                     {
-                        matrix[x, y] = newValue;
-
+                        matrix[y, x] = newValue;
                         var pos = new Vector2Int(x, y);
                         if (unitLookup.TryGetValue(pos, out var unit))
                         {
@@ -141,24 +141,25 @@ namespace LevelDesignTool
         #endregion
 
         #region Scene Handler
+
         private void BuildSceneFromMatrix()
         {
             ClearPreviousScene();
             GameObject parent = new GameObject();
             parent.name = levelName;
-            for (int x = 0; x < gridSize.x; x++)
+            for (int y = 0; y < gridSize.y; y++) // Duyệt hàng (y)
             {
-                for (int y = 0; y < gridSize.y; y++)
+                for (int x = 0; x < gridSize.x; x++) // Duyệt cột (x)
                 {
-                    int type = matrix[x, y];
-                    
+                    int type = matrix[y, x];
+
                     Vector3 worldPos = GridUtils.GridToWorld(cellSize, Origin, new Vector2Int(x, y));
                     GameObject obj = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
-                    
+
                     obj.transform.SetParent(parent.transform);
                     obj.transform.position = worldPos;
                     obj.name = $"{levelName}_({x},{y})";
-                        
+
 #if UNITY_EDITOR
                     ILevelUnit unit = obj.GetComponent<ILevelUnit>();
                     if (unit == null)
@@ -169,8 +170,7 @@ namespace LevelDesignTool
 
                     unit?.SetCellType(type);
 #endif
-
-                } 
+                }
             }
         }
         
