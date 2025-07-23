@@ -48,7 +48,8 @@ MonoBehaviour:
   musicMixerGroup: {fileID: -8342490769792436170, guid: 833a402c295eccd438b6ea0ae14c7bc6, type: 2}
   fxMixerGroup: {fileID: -4939058088922652291, guid: 833a402c295eccd438b6ea0ae14c7bc6, type: 2}
   musicSource: {fileID: 6657450844492723149}
-  musicClips: []
+  musicClips:
+  - {fileID: 8300000, guid: a9dfa0bae9852224280323bb8e6de2a9, type: 3}
   fxList:
   - id: 0
     clip: {fileID: 0}
@@ -71,7 +72,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0
