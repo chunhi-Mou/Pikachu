@@ -84,9 +84,9 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         //TODO: Setup lai
-        //ChangeState(GameState.MainMenu);
-        //IManager.Instance.OpenUI<CanvasMainMenu>();
-        StartGame();
+        ChangeState(GameState.MainMenu);
+        UIManager.Instance.OpenUI<CanvasMainMenu>();
+        //StartGame();
     }
 
     private void Update()
@@ -103,15 +103,19 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
-    public void StartGame()
+    public void StartGame(int levelToLoad)
     {
         ChangeState(GameState.GamePlay);
         score = 0;
         timer = levelTime;
+
+        // GameManager gọi LevelManager để tải màn chơi
+        LevelManager.Instance.OnLoadLevel(levelToLoad); 
+
         // Mở màn hình chơi game
         UIManager.Instance.CloseAllUI();
         UIManager.Instance.OpenUI<CanvasGamePlay>();
-        
+    
         // Cập nhật giao diện lúc bắt đầu
         OnScoreUpdate?.Invoke(score);
         OnTimerUpdate?.Invoke(timer);
@@ -138,11 +142,19 @@ public class GameManager : Singleton<GameManager>
             UIManager.Instance.OpenUI<CanvasFail>().SetBaseScore(score);
         }
     }
-    private void SaveTotalScore(int currentScore)
+    private void SaveTotalScore(int currentScore) //TODO: Data Manager
     {
         int totalScore = PlayerPrefs.GetInt(GameCONST.SCORE, 0);
         totalScore += currentScore;
         PlayerPrefs.SetInt(GameCONST.SCORE, totalScore);
         PlayerPrefs.Save();
+        
+        //SAVE HIGHEST SCORE
+        int highestScore = PlayerPrefs.GetInt(GameCONST.HIGHEST_SCORE, 0);
+        if (totalScore > highestScore)
+        {
+            PlayerPrefs.SetInt(GameCONST.HIGHEST_SCORE, totalScore);
+            PlayerPrefs.Save();
+        }
     }
 }

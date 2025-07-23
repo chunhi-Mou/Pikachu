@@ -4,4 +4,6 @@ public static class GameCONST
 {
     public const string PRE_LEVEL_NAME = "Level_";
     public const string SCORE = "TotalScor";
+    public const string HIGHEST_PLAYED_LEVEL = "HighestPlayedLevel";
+    public const string HIGHEST_SCORE = "HighestScore";
 }

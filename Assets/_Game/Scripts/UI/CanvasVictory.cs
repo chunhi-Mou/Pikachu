@@ -15,6 +15,7 @@ public class CanvasVictory : UICanvas
     {
         Close(0);
         UIManager.Instance.OpenUI<CanvasMainMenu>();
+        LevelManager.Instance.BackToMainMenu(true);
     }
 
     public void NextLevelButton()

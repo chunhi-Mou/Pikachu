@@ -6,55 +6,37 @@ public class LevelManager : Singleton<LevelManager>
     public Vector2 cellSize;
     [SerializeField] private GameTile gameTilePrefab;
     private int currentLevel = 1;
-    private GameObject currLevelObject;
     private string levelName = GameCONST.PRE_LEVEL_NAME;
     private int[,] matrix;
     private GameTile[,] tiles;
     private int height;
     private int width;
     public Vector3 origin => GridUtils.CalOrigin(new Vector2Int(width, height), cellSize);
-    
-    private void Start()
+    protected void Awake()
     {
-        OnLoadLevel(currentLevel);
-        OnInit();
+        currentLevel = PlayerPrefs.GetInt(GameCONST.HIGHEST_PLAYED_LEVEL, 1);
     }
-
-    private void OnInit() // khoi tao trang thai ban dau
-    {
-        
-    }
-    private void OnPlay() // Goi khi bat dau Gameplay
-    {
-        
-    }
-    private void OnDespawn()
+    public void OnLoadLevel(int level)
     {
         ClearGrid();
-    }
-    private void OnLoadLevel(int level)
-    {
         Data<int> data = JsonUtils.Load<int>(levelName + level.ToString());
         matrix = GridData<int>.ConvertGridDataTo2DArray(data.grid);
         GenerateGrid(matrix);
+        UpdatePlayedLevel(level);
     }
-
-    private void OnLose()
-    {
-        
-    }
-
-    private void OnWin()
-    {
-        
-    }
-
     public void OnNextLevel()
     {
-        OnDespawn();
         OnLoadLevel(++currentLevel);
-        OnInit();
-        GameManager.Instance.StartGame();
+        GameManager.Instance.StartGame(currentLevel);
+    }
+
+    public void BackToMainMenu(bool isVictory)
+    {
+        if (isVictory)
+        {
+            currentLevel++;
+            UpdatePlayedLevel(currentLevel);
+        }
     }
     #region Grid Handler
 
@@ -107,4 +89,15 @@ public class LevelManager : Singleton<LevelManager>
         tiles = null;
     }
     #endregion
+
+    private void UpdatePlayedLevel(int level) //TODO: DataManager
+    {
+        int saveLevel = PlayerPrefs.GetInt(GameCONST.HIGHEST_PLAYED_LEVEL, level);
+        if (level > saveLevel)
+        {
+            PlayerPrefs.SetInt(GameCONST.HIGHEST_PLAYED_LEVEL, level);
+            PlayerPrefs.Save();
+            Debug.Log($"Level {level} has been played");
+        }
+    }
 }
