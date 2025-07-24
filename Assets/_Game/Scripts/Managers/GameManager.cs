@@ -32,7 +32,7 @@ public class GameManager : Singleton<GameManager>
     public event Action<int> OnShuffleCntUpdate;
     public event Action<int> OnHintCntUpdate;
 
-    public void ResetBoosters()
+    private void ResetBoosters()
     {
         ShuffleUse = maxShuffleUse;
         HintUse = maxHintUse;
@@ -55,14 +55,7 @@ public class GameManager : Singleton<GameManager>
         OnHintCntUpdate?.Invoke(HintUse);
         return true;
     }
-    public void ResetTotalScore()
-    {
-        PlayerPrefs.DeleteKey(GameCONST.SCORE);
-    }
-    public int GetTotalScore()
-    {
-        return PlayerPrefs.GetInt(GameCONST.SCORE, 0);
-    }
+    
     private void Awake()
     {
         //tranh viec nguoi choi cham da diem vao man hinh
@@ -83,10 +76,8 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        //TODO: Setup lai
         ChangeState(GameState.MainMenu);
         UIManager.Instance.OpenUI<CanvasMainMenu>();
-        //StartGame();
     }
 
     private void Update()
@@ -103,14 +94,14 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
-    public void StartGame(int levelToLoad)
+    public void StartGame()
     {
         ChangeState(GameState.GamePlay);
         score = 0;
         timer = levelTime;
 
         // GameManager gọi LevelManager để tải màn chơi
-        LevelManager.Instance.OnLoadLevel(levelToLoad); 
+        LevelManager.Instance.OnLoadLevel(); 
 
         // Mở màn hình chơi game
         UIManager.Instance.CloseAllUI();
@@ -131,30 +122,18 @@ public class GameManager : Singleton<GameManager>
     public void EndGame(bool isVictory)
     {
         ChangeState(GameState.Finish);
+        
         UIManager.Instance.CloseUI<CanvasGamePlay>(0f);
-        SaveTotalScore(score);
+        DataManager.Instance.SaveTotalScore(score);
+        
+        int totalScore = DataManager.Instance.GetTotalScore();
         if (isVictory)
         {
-            UIManager.Instance.OpenUI<CanvasVictory>().SetBaseInfo(GetTotalScore(), ((int)timer).ToString());
+            UIManager.Instance.OpenUI<CanvasVictory>().SetBaseInfo(totalScore, ((int)timer).ToString());
         }
         else
         {
             UIManager.Instance.OpenUI<CanvasFail>().SetBaseScore(score);
-        }
-    }
-    private void SaveTotalScore(int currentScore) //TODO: Data Manager
-    {
-        int totalScore = PlayerPrefs.GetInt(GameCONST.SCORE, 0);
-        totalScore += currentScore;
-        PlayerPrefs.SetInt(GameCONST.SCORE, totalScore);
-        PlayerPrefs.Save();
-        
-        //SAVE HIGHEST SCORE
-        int highestScore = PlayerPrefs.GetInt(GameCONST.HIGHEST_SCORE, 0);
-        if (totalScore > highestScore)
-        {
-            PlayerPrefs.SetInt(GameCONST.HIGHEST_SCORE, totalScore);
-            PlayerPrefs.Save();
         }
     }
 }

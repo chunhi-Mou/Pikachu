@@ -15,6 +15,5 @@ public class CanvasFail : UICanvas
     {
         Close(0);
         UIManager.Instance.OpenUI<CanvasMainMenu>();
-        LevelManager.Instance.BackToMainMenu(false);
     }
 }

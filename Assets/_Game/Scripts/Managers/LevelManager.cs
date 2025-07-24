@@ -14,28 +14,23 @@ public class LevelManager : Singleton<LevelManager>
     public Vector3 origin => GridUtils.CalOrigin(new Vector2Int(width, height), cellSize);
     protected void Awake()
     {
-        currentLevel = PlayerPrefs.GetInt(GameCONST.HIGHEST_PLAYED_LEVEL, 1);
+        currentLevel = DataManager.Instance.GetHighestLevel();
     }
-    public void OnLoadLevel(int level)
+    public void OnLoadLevel()
     {
+        currentLevel = DataManager.Instance.GetHighestLevel();
         ClearGrid();
-        Data<int> data = JsonUtils.Load<int>(levelName + level.ToString());
+        Data<int> data = JsonUtils.Load<int>(levelName + currentLevel.ToString());
         matrix = GridData<int>.ConvertGridDataTo2DArray(data.grid);
-        GenerateGrid(matrix);
-        UpdatePlayedLevel(level);
+        GenerateGrid(matrix); 
     }
-    public void OnNextLevel()
+    public void OnNextLevel(bool isStartGame)
     {
-        OnLoadLevel(++currentLevel);
-        GameManager.Instance.StartGame(currentLevel);
-    }
-
-    public void BackToMainMenu(bool isVictory)
-    {
-        if (isVictory)
+        currentLevel++;
+        DataManager.Instance.UpdatePlayedLevel(currentLevel);
+        if (isStartGame)
         {
-            currentLevel++;
-            UpdatePlayedLevel(currentLevel);
+            GameManager.Instance.StartGame();
         }
     }
     #region Grid Handler
@@ -89,15 +84,4 @@ public class LevelManager : Singleton<LevelManager>
         tiles = null;
     }
     #endregion
-
-    private void UpdatePlayedLevel(int level) //TODO: DataManager
-    {
-        int saveLevel = PlayerPrefs.GetInt(GameCONST.HIGHEST_PLAYED_LEVEL, level);
-        if (level > saveLevel)
-        {
-            PlayerPrefs.SetInt(GameCONST.HIGHEST_PLAYED_LEVEL, level);
-            PlayerPrefs.Save();
-            Debug.Log($"Level {level} has been played");
-        }
-    }
 }

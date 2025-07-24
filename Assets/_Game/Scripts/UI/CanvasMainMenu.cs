@@ -8,22 +8,19 @@ public class CanvasMainMenu : UICanvas
     [SerializeField] TextMeshProUGUI highestScoreText;
     [SerializeField] private TextMeshProUGUI currentLevelText;
     
-    private int currentLevel;
-
-    void Start()
+    private void Awake()
     {
         Setup();
     }
 
     public override void Setup()
     {
-        currentLevel = PlayerPrefs.GetInt(GameCONST.HIGHEST_PLAYED_LEVEL, 1);
-        currentLevelText.text = "Level: " + currentLevel.ToString();
-        highestScoreText.text = PlayerPrefs.GetInt(GameCONST.HIGHEST_SCORE, 0).ToString();
+        currentLevelText.text = "Level: " + DataManager.Instance.GetHighestLevel();
+        highestScoreText.text = DataManager.Instance.GetHighestScore().ToString();
     }
     public void PlayButton()
     {
-        GameManager.Instance.StartGame(currentLevel); 
+        GameManager.Instance.StartGame(); 
     }
 
     public void SettingsButton()

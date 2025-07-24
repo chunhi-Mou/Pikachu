@@ -13,13 +13,12 @@ public class CanvasVictory : UICanvas
     }
 	    public void MainMenuButton()
     {
+        LevelManager.Instance.OnNextLevel(false);
         Close(0);
         UIManager.Instance.OpenUI<CanvasMainMenu>();
-        LevelManager.Instance.BackToMainMenu(true);
     }
-
     public void NextLevelButton()
     {
-        LevelManager.Instance.OnNextLevel();
+        LevelManager.Instance.OnNextLevel(true);
     }
 }
