@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 39137464}
   - component: {fileID: 39137463}
   - component: {fileID: 39137465}
+  - component: {fileID: 39137466}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -180,6 +181,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12b8dee36a2abe24f9c2a91cb2922fbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &39137466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39137462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b467285a9df09c46a6636cca961b097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &83422889
@@ -559,6 +572,7 @@ GameObject:
   - component: {fileID: 1243180712}
   - component: {fileID: 1243180711}
   - component: {fileID: 1243180710}
+  - component: {fileID: 1243180713}
   m_Layer: 0
   m_Name: TileManager
   m_TagString: Untagged
@@ -593,6 +607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileVisualController: {fileID: 1243180710}
+  deadLockHandler: {fileID: 1243180713}
   addedScore: 5
 --- !u!4 &1243180712
 Transform:
@@ -610,6 +625,18 @@ Transform:
   - {fileID: 1349691987}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1243180713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1243180709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ef2e2782910db41b06c14e604ce2be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!120 &1349691986 stripped
 LineRenderer:
   m_CorrespondingSourceObject: {fileID: 2283188091556127138, guid: 29d4dd3a274ad4b4aa7daa65d8c276f2, type: 3}

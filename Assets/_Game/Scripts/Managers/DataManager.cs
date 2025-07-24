@@ -19,9 +19,7 @@ public class DataManager : Singleton<DataManager>
     public void SaveWinningScore(int totalLevelScore)
     {
         int scoreThisLevel = totalLevelScore;
-        Debug.Log(PlayerPrefs.GetInt(GameCONST.SCORE, 0));
         int newTotalScore = PlayerPrefs.GetInt(GameCONST.SCORE, 0) + scoreThisLevel;
-        Debug.Log(newTotalScore);
         PlayerPrefs.SetInt(GameCONST.SCORE, newTotalScore);
         if (newTotalScore > GetHighestScore())
         {

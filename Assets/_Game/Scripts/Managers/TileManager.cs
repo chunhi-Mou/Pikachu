@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[RequireComponent(typeof(TileVisualController))]
+[RequireComponent(typeof(DeadLockHandler))]
 public class TileManager : Singleton<TileManager>
 {
     [SerializeField] TileVisualController tileVisualController;
+    [SerializeField] DeadLockHandler deadLockHandler;
     [SerializeField] private int addedScore = 5;
     private int width;
     private int height;
@@ -31,6 +33,15 @@ public class TileManager : Singleton<TileManager>
         TileTypeDic = new Dictionary<TileType, List<Vector2Int>>();
         path = new List<Vector2Int>();
         tile1 = null; tile2 = null;
+        if (tileVisualController == null)
+        {
+            tileVisualController.GetComponent<TileVisualController>();
+        }
+
+        if (deadLockHandler == null)
+        {
+            deadLockHandler.GetComponent<DeadLockHandler>();
+        } 
     }
     private void OnDespawn()
     {
@@ -47,11 +58,7 @@ public class TileManager : Singleton<TileManager>
     }
     public void CheckDeadLock()
     {
-        if (IsDeadLock())
-        {
-            //TODO: Trigger Game event - DeadLock
-            Debug.Log("Board is deadlocked!");
-        }
+        deadLockHandler.CheckAndHandleDeadlock(TileTypeDic, CheckPathExits);
     }
     public void SetTilesData(GameTile[,] newTiles)
     {
@@ -170,23 +177,7 @@ public class TileManager : Singleton<TileManager>
             TileTypeDic.Remove(tile.TileType); // Loại bỏ key
         }
     }
-    private bool IsDeadLock() // Chỉ gọi khi Player bấm Sai cặp/ Sau khi sử dụng Booster
-    {
-        foreach (var tileList in TileTypeDic.Values)
-        {
-            for (int i = 0; i < tileList.Count; i++)
-            {
-                for (int j = i + 1; j < tileList.Count; j++)
-                {
-                    if (CheckPathExits(tileList[i], tileList[j]))
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
+    
     private bool IsWin()
     {
         return (TileTypeDic == null || TileTypeDic.Count == 0);

@@ -5,6 +5,15 @@ using UnityEngine.UIElements;
 
 public class BoosterController : MonoBehaviour
 {
+    private void OnEnable()
+    {
+        GameEvents.OnDeadlockDetected += ShuffleTiles;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnDeadlockDetected -= ShuffleTiles;
+    }
     public void ShuffleButtonClick()
     {
         if (!GameManager.Instance.UseShuffle()) return; 
@@ -43,7 +52,7 @@ public class BoosterController : MonoBehaviour
         TileManager.Instance.CheckDeadLock();
     }
 
-    private void ShuffleTiles()
+    public void ShuffleTiles()
     {
         GameTile[,] shuffledTiles = TileManager.Instance.Tiles;
         List<TileType> activePos = new List<TileType>();
