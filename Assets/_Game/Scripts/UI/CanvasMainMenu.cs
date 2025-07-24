@@ -15,7 +15,7 @@ public class CanvasMainMenu : UICanvas
 
     public override void Setup()
     {
-        currentLevelText.text = "Level: " + DataManager.Instance.GetHighestLevel();
+        currentLevelText.text = "Level: " + DataManager.Instance.GetCurLevel();
         highestScoreText.text = DataManager.Instance.GetHighestScore().ToString();
     }
     public void PlayButton()

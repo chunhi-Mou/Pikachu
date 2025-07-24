@@ -121,18 +121,21 @@ public class GameManager : Singleton<GameManager>
 
     public void EndGame(bool isVictory)
     {
+        if (!IsState(GameState.GamePlay)) return; 
         ChangeState(GameState.Finish);
-        
         UIManager.Instance.CloseUI<CanvasGamePlay>(0f);
-        DataManager.Instance.SaveTotalScore(score);
-        
-        int totalScore = DataManager.Instance.GetTotalScore();
+
         if (isVictory)
         {
-            UIManager.Instance.OpenUI<CanvasVictory>().SetBaseInfo(totalScore, ((int)timer).ToString());
+            int timeBonus = (int)timer;
+            int totalLevelScore = score + timeBonus;
+            DataManager.Instance.SaveWinningScore(totalLevelScore);
+            UIManager.Instance.OpenUI<CanvasVictory>().SetBaseInfo(score, timeBonus, totalLevelScore);
         }
         else
         {
+            LevelManager.Instance.ResetLevel();
+            DataManager.Instance.ResetTotalScore();//TODO: Revive or Die
             UIManager.Instance.OpenUI<CanvasFail>().SetBaseScore(score);
         }
     }

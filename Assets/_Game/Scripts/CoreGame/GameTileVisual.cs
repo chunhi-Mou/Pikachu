@@ -21,22 +21,21 @@ public class GameTileVisual : MonoBehaviour
         collider2D.enabled = isPlayable;
     }
 
-    public void PlayMatchEffect(Action onFinished, Action onDespawn)
+    public void PlayMatchEffect(Action onDespawn)
     {
         if (_playMatchEffectCoroutine != null)
         {
             StopCoroutine(_playMatchEffectCoroutine);
         }
-        _playMatchEffectCoroutine = StartCoroutine(PlayMatchEffectRoutine(onFinished, onDespawn));
+        _playMatchEffectCoroutine = StartCoroutine(PlayMatchEffectRoutine(onDespawn));
     }
-    private IEnumerator PlayMatchEffectRoutine(Action onFinished,  Action onDespawn)
+    private IEnumerator PlayMatchEffectRoutine(Action onDespawn)
     {
         EffectSelected.SetActive(false);
         collider2D.enabled = false;
         VFXPrefab.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         onDespawn?.Invoke();
-        onFinished?.Invoke();
     }
     public void SetSelected(bool selected) => EffectSelected.SetActive(selected);
 }

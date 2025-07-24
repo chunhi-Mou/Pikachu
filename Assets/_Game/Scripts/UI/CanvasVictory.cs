@@ -5,11 +5,16 @@ public class CanvasVictory : UICanvas
 {
 	[SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI timerText;
-
-    public void SetBaseInfo(int baseScore, string baseTimer)
+    [SerializeField] TextMeshProUGUI highestScoreText;
+    [SerializeField] TextMeshProUGUI totalLvScoreText;
+    [SerializeField] TextMeshProUGUI currentScoreText;
+    public void SetBaseInfo(int baseScore, int timeBonus, int totalLevelScore)
     {
         scoreText.text = baseScore.ToString();
-        timerText.text = baseTimer;
+        timerText.text = timeBonus.ToString();
+        highestScoreText.text = DataManager.Instance.GetHighestScore().ToString();
+        totalLvScoreText.text = totalLevelScore.ToString();
+        currentScoreText.text = DataManager.Instance.GetCurrentScore().ToString();
     }
 	    public void MainMenuButton()
     {

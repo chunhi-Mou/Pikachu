@@ -149,18 +149,20 @@ public class TileManager : Singleton<TileManager>
         
         tile1 = null;
         tile2 = null;
-    }
 
-    private void OnWinHandler()
-    {
         if (IsWin())
         {
-            GameManager.Instance.EndGame(true);
+            StartCoroutine(WinRoutine());
         }
+    }
+    private IEnumerator WinRoutine()
+    {
+        yield return new WaitForSeconds(0.5f); 
+        GameManager.Instance.EndGame(true);
     }
     private void HandleTileMatched(GameTile tile)
     {
-        tile.HandleMatch(OnWinHandler);
+        tile.HandleMatch();
         TileTypeDic[tile.TileType].Remove(tile.Position);
         Tiles[tile.Position.y, tile.Position.x] = null;
         if (TileTypeDic[tile.TileType].Count == 0) // Không còn cặp nào

@@ -14,11 +14,15 @@ public class LevelManager : Singleton<LevelManager>
     public Vector3 origin => GridUtils.CalOrigin(new Vector2Int(width, height), cellSize);
     protected void Awake()
     {
-        currentLevel = DataManager.Instance.GetHighestLevel();
+        currentLevel = DataManager.Instance.GetCurLevel();
+    }
+    public void ResetLevel()
+    {
+        DataManager.Instance.UpdatePlayedLevel(1);
     }
     public void OnLoadLevel()
     {
-        currentLevel = DataManager.Instance.GetHighestLevel();
+        currentLevel = DataManager.Instance.GetCurLevel();
         ClearGrid();
         Data<int> data = JsonUtils.Load<int>(levelName + currentLevel.ToString());
         matrix = GridData<int>.ConvertGridDataTo2DArray(data.grid);
