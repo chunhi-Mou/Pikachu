@@ -88,11 +88,12 @@ public class TileManager : Singleton<TileManager>
     {
         if (CheckPathExits(tileA.Position, tileB.Position))
         {
+            GameEvents.OnTilesMatched?.Invoke();
+            
             lineVisual.DrawPath(path); // VẼ đường
             
             HandleTileMatched(tileA);
             HandleTileMatched(tileB);
-            GameManager.Instance.AddScore(addedScore); //TODO: chuyển thành Gửi TBao
             if (IsWin())
             {
                 StartCoroutine(WinRoutine());
