@@ -54,7 +54,7 @@ MonoBehaviour:
   - id: 0
     clip: {fileID: 0}
   - id: 5
-    clip: {fileID: 8300000, guid: 0278dbc55885ba2418b361332fead12f, type: 3}
+    clip: {fileID: 8300000, guid: 556bc3409aac3d24f9f56c15582ca29f, type: 3}
   - id: 2
     clip: {fileID: 8300000, guid: 4f87ff2e1aa9d1a46b65b8cfd63d9e20, type: 3}
   - id: 1

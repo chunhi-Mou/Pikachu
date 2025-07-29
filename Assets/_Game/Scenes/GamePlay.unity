@@ -224,8 +224,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca811219e640b047883982233c39aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: {x: 0.45, y: 0.45}
   gameTilePrefab: {fileID: 2167322706878924541, guid: a65b3821b6ab7d14bacf721148e3ce3c, type: 3}
+  cellSize: {x: 0.45, y: 0.45}
 --- !u!4 &83422891
 Transform:
   m_ObjectHideFlags: 0
@@ -606,7 +606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32b9a828a5224d948a8596bc537b57ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileVisualController: {fileID: 1243180710}
+  lineVisual: {fileID: 1243180710}
   deadLockHandler: {fileID: 1243180713}
   addedScore: 5
 --- !u!4 &1243180712
@@ -927,6 +927,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3509677139125244107, guid: 7df88686d46c11c4882b181df66248b4, type: 3}
+      propertyPath: fxList.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: f31cb8f7cf84db9448434ad5fa7b32f3, type: 3}
     - target: {fileID: 6051652196861753195, guid: 7df88686d46c11c4882b181df66248b4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 540
