@@ -41,18 +41,18 @@ public class BoosterController : MonoBehaviour
                     Vector2Int posA = hintPos[i];
                     Vector2Int posB = hintPos[j];
                     
-                    if (TileManager.Instance.CheckPathExits(posA, posB))
+                    if (TileManager.Instance.CheckPathExits(posA, posB)) //TODO: đang bi goi 2 lan
                     {
-                        TileManager.Instance.ForceMatchByBooster(tiles[posA.y, posA.x], tiles[posB.y, posB.x]);
+                        GameEvents.OnValidPairClicked?.Invoke(tiles[posA.y, posA.x], tiles[posB.y, posB.x]);
                         return;
                     }
                 }
             }
         }
-        TileManager.Instance.CheckDeadLock();
+        GameEvents.OnTriggerDeadlockCheck?.Invoke();
     }
 
-    public void ShuffleTiles()
+    private void ShuffleTiles()
     {
         GameTile[,] shuffledTiles = TileManager.Instance.Tiles;
         List<TileType> activePos = new List<TileType>();
@@ -89,6 +89,6 @@ public class BoosterController : MonoBehaviour
         }
         
         TileManager.Instance.SetTilesData(shuffledTiles);
-        TileManager.Instance.CheckDeadLock();
+        GameEvents.OnTriggerDeadlockCheck?.Invoke();
     }
 }

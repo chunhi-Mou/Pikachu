@@ -1,17 +1,22 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class LevelManager : Singleton<LevelManager>
 {
-    public Vector2 cellSize;
     [SerializeField] private GameTile gameTilePrefab;
+    [SerializeField] private Vector2 cellSize = Vector2.one;
+    public Vector2 CellSize => cellSize;
+    private readonly string levelName = GameCONST.PRE_LEVEL_NAME;
+    
     private int currentLevel = 1;
-    private string levelName = GameCONST.PRE_LEVEL_NAME;
-    private int[,] matrix;
-    private GameTile[,] tiles;
     private int height;
     private int width;
-    public Vector3 origin => GridUtils.CalOrigin(new Vector2Int(width, height), cellSize);
+    private int[,] matrix;
+    private GameTile[,] tiles;
+    
+    public Vector3 Origin => GridUtils.CalOrigin(new Vector2Int(width, height), cellSize);
+    
     protected void Awake()
     {
         currentLevel = DataManager.Instance.GetCurLevel();
@@ -22,9 +27,9 @@ public class LevelManager : Singleton<LevelManager>
     }
     public void OnLoadLevel()
     {
-        currentLevel = DataManager.Instance.GetCurLevel();
         ClearGrid();
-        Data<int> data = JsonUtils.Load<int>(levelName + currentLevel.ToString());
+        currentLevel = DataManager.Instance.GetCurLevel();
+        Data<int> data = JsonUtils.Load<int>(levelName + currentLevel);
         matrix = GridData<int>.ConvertGridDataTo2DArray(data.grid);
         GenerateGrid(matrix); 
     }
@@ -37,39 +42,46 @@ public class LevelManager : Singleton<LevelManager>
             GameManager.Instance.StartGame();
         }
     }
+    
     #region Grid Handler
-
     private void GenerateGrid(int[,] gridData)
     {
-        // Lấy kích thước từ dữ liệu được truyền vào
-        height = gridData.GetLength(0);
-        width = gridData.GetLength(1);
-        
-        tiles = new GameTile[height+2, width+2];
-        
-        for (int i = 0; i < height; i++)
+        int rawHeight = gridData.GetLength(0);
+        int rawWidth = gridData.GetLength(1);
+
+        height = rawHeight + 2; // THÊM PADDING
+        width = rawWidth + 2;
+
+        // Khởi tạo mảng có padding
+        tiles = new GameTile[height, width];
+        matrix = new int[height, width];
+
+        for (int i = 0; i < rawHeight; i++)
         {
-            for (int j = 0; j < width; j++)
+            for (int j = 0; j < rawWidth; j++)
             {
-                if (gridData[i, j] > 0) // 0 là Null
+                // Dữ liệu từ JSON nằm trong phần lõi (không bao gồm padding)
+                int paddedI = i + 1;
+                int paddedJ = j + 1;
+
+                matrix[paddedI, paddedJ] = gridData[i, j];
+
+                if (gridData[i, j] > 0)
                 {
-                    Vector2Int positionInArray = new Vector2Int(j + 1, i + 1);
-                    Vector3 tileWorldPosition = GridUtils.GridToWorld(cellSize, origin, new Vector2Int(j, i));
-                    
-                    // Tạo tile
-                    GameTile newTile = Instantiate(gameTilePrefab, tileWorldPosition, Quaternion.identity, transform);
-                    newTile.SetPosition(positionInArray.x, positionInArray.y);
+                    Vector2Int gridPos = new Vector2Int(paddedJ, paddedI); // (x, y)
+                    Vector3 worldPos = GridUtils.GridToWorld(cellSize, Origin, gridPos);
+
+                    GameTile newTile = Instantiate(gameTilePrefab, worldPos, Quaternion.identity, transform);
+                    newTile.SetPosition(gridPos.x, gridPos.y);
                     newTile.SetCellType(gridData[i, j]);
-                    
-                    // Save Data
-                    tiles[positionInArray.y, positionInArray.x] = newTile;
-                  
+
+                    tiles[gridPos.y, gridPos.x] = newTile;
                 }
             }
         }
+
         TileManager.Instance.SetTilesData(tiles);
     }
-    
     //Dọn dẹp grid khi qua level
     private void ClearGrid()
     {

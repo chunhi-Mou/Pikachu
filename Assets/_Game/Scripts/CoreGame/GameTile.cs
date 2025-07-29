@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Scriptable;
 using UnityEngine;
 public class GameTile : MonoBehaviour
@@ -34,9 +35,13 @@ public class GameTile : MonoBehaviour
 
     public void HandleDeSelected()
     {
+        StartCoroutine(DeSelectDelay(0.2f));
+    }
+    private IEnumerator DeSelectDelay (float delay)
+    {
+        yield return new WaitForSeconds(delay);
         visual.SetSelected(false);
     }
-
     public void HandleMatch()
     {
         visual.PlayMatchEffect(OnDespawn);

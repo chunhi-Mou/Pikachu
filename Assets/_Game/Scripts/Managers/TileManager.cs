@@ -1,173 +1,105 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(TileVisualController))]
+
+[RequireComponent(typeof(LineVisual))]
 [RequireComponent(typeof(DeadLockHandler))]
 public class TileManager : Singleton<TileManager>
 {
-    [SerializeField] TileVisualController tileVisualController;
+    [SerializeField] LineVisual lineVisual;
     [SerializeField] DeadLockHandler deadLockHandler;
     [SerializeField] private int addedScore = 5;
+    
     private int width;
     private int height;
-    private Vector2 cellSize;
-    private Vector3 origin;
-    
     public GameTile[,] Tiles { get; private set; }
-    private GameTile tile1;
-    private GameTile tile2;
-    private List<Vector2Int> path;
     public Dictionary<TileType, List<Vector2Int>> TileTypeDic { get; private set; }
+    
+    private List<Vector2Int> path;
+    private void OnEnable()
+    {
+        GameEvents.OnValidPairClicked += ProcessMatch;
+        GameEvents.OnTriggerDeadlockCheck += CheckDeadLock;
+    }
 
+    void OnDisable()
+    {
+        GameEvents.OnValidPairClicked -= ProcessMatch;
+        GameEvents.OnTriggerDeadlockCheck -= CheckDeadLock;
+    }
     private void Awake()
     {
-        OnInit();
-    }
-    private void OnDestroy()
-    {
-        OnDespawn();
-    }
-    private void OnInit() // Hàm khởi tạo
-    {
-        GameEvents.OnTileClicked += OnTileClicked;
         TileTypeDic = new Dictionary<TileType, List<Vector2Int>>();
         path = new List<Vector2Int>();
-        tile1 = null; tile2 = null;
-        if (tileVisualController == null)
+    }
+    public GameTile GetGameplayTileAt(Vector2Int pos) {
+        GameTile tile = Tiles[pos.y, pos.x];
+        if (tile != null && tile.TileType >= TileType.Obstacles)
         {
-            tileVisualController.GetComponent<TileVisualController>();
+            return null;
         }
-
-        if (deadLockHandler == null)
-        {
-            deadLockHandler.GetComponent<DeadLockHandler>();
-        } 
-    }
-    private void OnDespawn()
-    {
-        GameEvents.OnTileClicked -= OnTileClicked;
-    }
-    public void ForceMatchByBooster(GameTile tileA, GameTile tileB)
-    {
-        ProcessMatch(tileA, tileB);
+        return Tiles[pos.y, pos.x];
     }
     public bool CheckPathExits(Vector2Int startPos, Vector2Int endPos)
     {
         path = BFSUtils.FindPathPikachu(startPos, endPos, 2, IsWalkable, IsInBounds);
         return path != null && path.Count > 0;
     }
-    public void CheckDeadLock()
+    
+    public void SetTilesData(GameTile[,] newTiles) // Nhận data đã khởi tạo
     {
-        deadLockHandler.CheckAndHandleDeadlock(TileTypeDic, CheckPathExits);
-    }
-    public void SetTilesData(GameTile[,] newTiles)
-    {
-        cellSize = LevelManager.Instance.cellSize;
-        origin = LevelManager.Instance.origin;
         height = newTiles.GetLength(0);
         width = newTiles.GetLength(1);
         Tiles = newTiles;
         
         TileTypeDic.Clear();
-        for (int i = 0; i < height; i++)
+        for (int i = 1; i < height - 1; i++)
         {
-            for (int j = 0; j < width; j++)
+            for (int j = 1; j < width - 1; j++)
             {
-                if (newTiles[i, j] != null) {
-                    //Update TILE VISUAL
-                    newTiles[i, j].SetCellType((int)newTiles[i, j].TileType);
-
-                    if ((int)newTiles[i, j].TileType >= (int)TileType.Obstacles) // Không theo dõi Vật Cản
-                    {
-                        continue;
-                    }
-                    // Update TILES DICT
+                GameTile tile = newTiles[i, j];
+                if (tile != null)
+                {
+                    tile.SetCellType((int)tile.TileType);
                     Vector2Int tilePos = new Vector2Int(j, i);
-                    if (TileTypeDic.ContainsKey(newTiles[i, j].TileType))
-                    {
-                        TileTypeDic[newTiles[i, j].TileType].Add(tilePos);
-                    }
-                    else
-                    {
-                        TileTypeDic[newTiles[i, j].TileType] = new List<Vector2Int>() { tilePos };
+
+                    if ((int)tile.TileType < (int)TileType.Obstacles) {
+                        if (TileTypeDic.ContainsKey(newTiles[i, j].TileType))
+                        {
+                            TileTypeDic[newTiles[i, j].TileType].Add(tilePos);
+                        }
+                        else
+                        {
+                            TileTypeDic[newTiles[i, j].TileType] = new List<Vector2Int>() { tilePos };
+                        }
                     }
                 }
             }
-        } 
-    }
-
-    private void OnTileClicked(Vector2 worldPosition)
-    {
-        Vector2Int cellPos = GridUtils.WorldToGrid(cellSize, origin, worldPosition);
-        if (!IsInBounds(cellPos))
-        {
-            return;
-        }
-
-        GameTile clickedTile = Tiles[cellPos.y+1, cellPos.x+1];
- 
-        if (clickedTile == null || clickedTile == tile1) return;
-
-        if (tile1 == null)
-        {
-            tile1 = clickedTile;
-            tile1.HandleSelected();
-        }
-        else // tile2 is guaranteed to be null here if tile1 is not
-        {
-            tile2 = clickedTile;
-            tile2.HandleSelected();
-
-            if (TilesAreMatchable(tile1, tile2))
-            {
-                CheckWhenFoundMatched(); // ProcessMatch và reset
-            }
-            else
-            {
-                // Không hợp lệ, hủy chọn tile1, và coi tile2 là tile1 mới
-                tile1.HandleDeSelected();
-                tile1 = tile2;
-                tile2 = null;
-                CheckDeadLock();
-            }
         }
     }
-    private bool TilesAreMatchable(GameTile tileA, GameTile tileB)
-    {
-        if (tileA.TileType != tileB.TileType) return false;
     
-        return CheckPathExits(tileA.Position, tileB.Position);
+    private void CheckDeadLock()
+    {
+        deadLockHandler.CheckAndHandleDeadlock(TileTypeDic, CheckPathExits);
     }
+    
+    #region Match Logic
     private void ProcessMatch(GameTile tileA, GameTile tileB)
     {
         if (CheckPathExits(tileA.Position, tileB.Position))
         {
-
-            tileVisualController.DrawPath(path);
+            lineVisual.DrawPath(path); // VẼ đường
             
             HandleTileMatched(tileA);
             HandleTileMatched(tileB);
-        }
-        GameManager.Instance.AddScore(addedScore);
-    }
-    private void CheckWhenFoundMatched()
-    {
-        ProcessMatch(tile1, tile2);
-        
-        tile1 = null;
-        tile2 = null;
-
-        if (IsWin())
-        {
-            StartCoroutine(WinRoutine());
+            GameManager.Instance.AddScore(addedScore); //TODO: chuyển thành Gửi TBao
+            if (IsWin())
+            {
+                StartCoroutine(WinRoutine());
+            }
         }
     }
-    private IEnumerator WinRoutine()
-    {
-        yield return new WaitForSeconds(0.5f); 
-        GameManager.Instance.EndGame(true);
-    }
-    private void HandleTileMatched(GameTile tile)
+    private void HandleTileMatched(GameTile tile) // Xử logic Match Tile ĐƠN LẺ
     {
         tile.HandleMatch();
         TileTypeDic[tile.TileType].Remove(tile.Position);
@@ -177,11 +109,21 @@ public class TileManager : Singleton<TileManager>
             TileTypeDic.Remove(tile.TileType); // Loại bỏ key
         }
     }
+    # endregion
     
+    #region WinLogic
     private bool IsWin()
     {
         return (TileTypeDic == null || TileTypeDic.Count == 0);
     }
+    private IEnumerator WinRoutine()
+    {
+        yield return new WaitForSeconds(0.5f); 
+        GameManager.Instance.EndGame(true);
+    }
+    #endregion
+    
+    #region Hàm hỗ trợ BFS
     private bool IsWalkable(Vector2Int pos)
     {
         return Tiles[pos.y, pos.x] == null;
@@ -191,4 +133,5 @@ public class TileManager : Singleton<TileManager>
         return pos.x >= 0 && pos.x < width &&
                pos.y >= 0 && pos.y < height;
     }
+    #endregion
 }

@@ -3,19 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileVisualController : MonoBehaviour
+public class LineVisual : MonoBehaviour
 {
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] private float zOffset = 0f;
     
     public void DrawPath(List<Vector2Int> path)
     {
-        Vector3 origin = LevelManager.Instance.origin;
-        Vector2 cellSize = LevelManager.Instance.cellSize;
+        Vector3 origin = LevelManager.Instance.Origin;
+        Vector2 cellSize = LevelManager.Instance.CellSize;
         lineRenderer.positionCount = path.Count;
         for (int i = 0; i < path.Count; i++)
         {
-            Vector2Int gridPos = new Vector2Int(path[i].x-1, path[i].y-1);
+            Vector2Int gridPos = new Vector2Int(path[i].x, path[i].y);
             Vector3 worldPos = GridUtils.GridToWorld(cellSize, origin, gridPos);
             worldPos.z = zOffset;
             lineRenderer.SetPosition(i, worldPos);
