@@ -52,7 +52,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a9dfa0bae9852224280323bb8e6de2a9, type: 3}
   fxList:
   - id: 0
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: f31cb8f7cf84db9448434ad5fa7b32f3, type: 3}
   - id: 5
     clip: {fileID: 8300000, guid: 556bc3409aac3d24f9f56c15582ca29f, type: 3}
   - id: 2

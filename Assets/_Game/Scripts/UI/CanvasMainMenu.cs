@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -7,7 +5,6 @@ public class CanvasMainMenu : UICanvas
 {
     [SerializeField] TextMeshProUGUI highestScoreText;
     [SerializeField] private TextMeshProUGUI currentLevelText;
-    
     private void Awake()
     {
         Setup();
@@ -20,7 +17,7 @@ public class CanvasMainMenu : UICanvas
     }
     public void PlayButton()
     {
-        GameManager.Instance.StartGame(); 
+        GameManager.Instance.StartGame();
     }
 
     public void SettingsButton()

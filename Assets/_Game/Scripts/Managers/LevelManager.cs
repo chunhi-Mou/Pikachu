@@ -13,7 +13,7 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] private GameTile gameTilePrefab;
     [SerializeField] private Timer timer;
     [SerializeField] private Score score;
-
+    
     public Score Score => score;
     public Timer Timer => timer;
 

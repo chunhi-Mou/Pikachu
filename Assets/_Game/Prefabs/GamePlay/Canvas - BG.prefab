@@ -266,9 +266,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 1948290793307850900, guid: 48e0c470324aaf2449979e0bf936a73f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -27
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228609785017779860, guid: 48e0c470324aaf2449979e0bf936a73f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 3170592341430121712, guid: 48e0c470324aaf2449979e0bf936a73f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -26
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538014538392197093, guid: 48e0c470324aaf2449979e0bf936a73f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 22
+      objectReference: {fileID: 0}
     - target: {fileID: 4618237491138162528, guid: 48e0c470324aaf2449979e0bf936a73f, type: 3}
       propertyPath: m_Name
       value: FreezeEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 5157879942709160555, guid: 48e0c470324aaf2449979e0bf936a73f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -83.000244
+      objectReference: {fileID: 0}
+    - target: {fileID: 5459528502332376461, guid: 48e0c470324aaf2449979e0bf936a73f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 84.000244
+      objectReference: {fileID: 0}
+    - target: {fileID: 5797540207460884206, guid: 48e0c470324aaf2449979e0bf936a73f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 89.000244
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
