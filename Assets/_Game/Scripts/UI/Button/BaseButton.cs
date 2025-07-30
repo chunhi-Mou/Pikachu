@@ -2,83 +2,100 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BaseButton : MonoBehaviour
+public abstract class BaseButton : MonoBehaviour
 {
+    [Header("UI References")]
     [SerializeField] protected Button button;
     [SerializeField] protected Image icon;
     [SerializeField] protected GameObject countIcon;
+    
+    [Header("Animation Settings")]
     [SerializeField] protected float buttonShiftY = -6f;
+    [SerializeField] protected float animationDuration = 0.2f;
 
-    private RectTransform iconRT;
+    private RectTransform iconRectTransform;
+    private Vector2 originalIconPosition;
+    private bool isAnimating = false;
 
-    protected virtual void Awake()
+    protected void Awake()
     {
-        iconRT = icon.rectTransform;
+        iconRectTransform = icon.rectTransform;
+        originalIconPosition = iconRectTransform.anchoredPosition;
     }
 
-    protected virtual void OnEnable()
+    protected void OnEnable()
     {
-        ResetButtonVisual();
-        AssignEvent();
-    }
-
-    protected virtual void OnDisable()
-    {
-        button.onClick.RemoveAllListeners();
-    }
-
-    protected virtual void AssignEvent()
-    {
+        RegisterEvents();
         button.onClick.AddListener(OnButtonClicked);
+        ResetIconPosition();
     }
 
-    protected virtual void OnButtonClicked()
+    protected void OnDisable()
     {
-        ShiftButtonIcon(buttonShiftY);
-        if (button.interactable)
+        UnregisterEvents();
+        button.onClick.RemoveListener(OnButtonClicked);
+    }
+
+    protected abstract void RegisterEvents();
+    protected abstract void UnregisterEvents();
+
+    private void OnButtonClicked()
+    {
+        if (!button.interactable || isAnimating) return;
+        StartCoroutine(ButtonClickSequence());
+    }
+
+    private IEnumerator ButtonClickSequence()
+    {
+        isAnimating = true;
+        // Icon xuong
+        ShiftIcon(buttonShiftY);
+        yield return new WaitForSeconds(animationDuration);
+        bool actionSuccess = ExecuteButtonAction();
+        bool shouldAnimateBack = actionSuccess && button.interactable;
+        if (shouldAnimateBack)
         {
-            StartCoroutine(ShiftBackCoroutine(buttonShiftY * -1));
+            ShiftIcon(-buttonShiftY);
         }
+        isAnimating = false;
     }
+    
+    protected abstract bool ExecuteButtonAction();
 
-    protected virtual void SetButtonVisual(bool enabled)
+    protected void SetButtonState(bool isEnabled, string countText = "")
     {
-        button.interactable = enabled;
+        button.interactable = isEnabled;
         if (countIcon != null)
         {
-            countIcon.SetActive(enabled);
+            countIcon.SetActive(isEnabled);
         }
-
-        if (enabled)
+        icon.color = isEnabled ? Color.white : new Color(0.5f, 0.5f, 0.5f, 1f);
+        UpdateCountDisplay(countText);
+        if (!isAnimating && isEnabled)
         {
-            icon.color = Color.white;
-        }
-        else
-        {
-            icon.color = new Color(0.5f, 0.5f, 0.5f, 1f);
+            ResetIconPosition();
         }
     }
 
-    private void ShiftButtonIcon(float shiftY)
+    protected virtual void UpdateCountDisplay(string countText)
     {
-        if (iconRT != null)
+        // Override cho class con
+    }
+
+    private void ShiftIcon(float shiftY)
+    {
+        if (iconRectTransform != null)
         {
-            iconRT.anchoredPosition = new Vector2(iconRT.anchoredPosition.x, iconRT.anchoredPosition.y + shiftY);
+            var currentPos = iconRectTransform.anchoredPosition;
+            iconRectTransform.anchoredPosition = new Vector2(currentPos.x, currentPos.y + shiftY);
         }
     }
 
-    private IEnumerator ShiftBackCoroutine(float shiftY)
+    private void ResetIconPosition()
     {
-        yield return new WaitForSeconds(0.2f);
-        ShiftButtonIcon(shiftY);
-    }
-
-    private void ResetButtonVisual()
-    {
-        if (iconRT != null)
+        if (iconRectTransform != null)
         {
-            iconRT.anchoredPosition = new Vector2(iconRT.anchoredPosition.x, 0); 
+            iconRectTransform.anchoredPosition = originalIconPosition;
         }
-        SetButtonVisual(true);
     }
 }

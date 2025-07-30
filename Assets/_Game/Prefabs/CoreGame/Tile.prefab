@@ -118,9 +118,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileIcon: {fileID: 3832155673863465277}
-  VFXPrefab: {fileID: 6951571477527117116}
-  EffectSelected: {fileID: 9097227880101343943}
-  tileBG: {fileID: 4838790685339396477}
+  vfxPrefab: {fileID: 6951571477527117116}
+  effectSelected: {fileID: 9097227880101343943}
+  tileBg: {fileID: 4838790685339396477}
   collider2D: {fileID: 1211523698671645224}
 --- !u!114 &2167322706878924541
 MonoBehaviour:

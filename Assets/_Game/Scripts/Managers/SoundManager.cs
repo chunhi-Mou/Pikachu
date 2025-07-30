@@ -25,7 +25,7 @@ public struct FxSound
     public AudioClip clip;
 }
 
-public class SoundManager : Singleton<SoundManager>
+public class SoundManager : Singleton<SoundManager> //TODO: Tối ưu
 {
     [Header("Mixer Groups")]
     [SerializeField] private AudioMixerGroup musicMixerGroup;

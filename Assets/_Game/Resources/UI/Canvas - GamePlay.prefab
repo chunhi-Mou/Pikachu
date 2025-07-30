@@ -152,9 +152,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDestroyOnClose: 0
+  timeSlider: {fileID: 8696144286658125820}
+  levelTime: 90
   scoreText: {fileID: 7151403895323958193}
   timerText: {fileID: 6830648102529425395}
-  timeSlider: {fileID: 8696144286658125820}
 --- !u!1 &684049302327909523
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,19 +353,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5459599975232051403}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1261309532704681714}
-        m_TargetAssemblyTypeName: BoosterController, Assembly-CSharp
-        m_MethodName: HintButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &8487731130531462862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,7 +370,8 @@ MonoBehaviour:
   icon: {fileID: 9171334871484666699}
   countIcon: {fileID: 4264922790332411339}
   buttonShiftY: -6
-  countHintUsed: {fileID: 7432332578860880381}
+  animationDuration: 0.2
+  boosterCntText: {fileID: 6830648102529425395}
 --- !u!1 &2981076043551709061
 GameObject:
   m_ObjectHideFlags: 0
@@ -1488,19 +1478,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 616168652050144861}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1261309532704681714}
-        m_TargetAssemblyTypeName: BoosterController, Assembly-CSharp
-        m_MethodName: ShuffleButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1512165509924055290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1517,7 +1495,8 @@ MonoBehaviour:
   icon: {fileID: 1877008930806302186}
   countIcon: {fileID: 5097647542818038571}
   buttonShiftY: -6
-  countShuffleUsed: {fileID: 5038737118937910331}
+  animationDuration: 0.2
+  boosterCntText: {fileID: 5038737118937910331}
 --- !u!1 &6952888549811066975
 GameObject:
   m_ObjectHideFlags: 0
@@ -1811,7 +1790,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7990877166007076920}
-  - component: {fileID: 1261309532704681714}
   - component: {fileID: 2048969961546353903}
   m_Layer: 5
   m_Name: BoosterUI
@@ -1841,18 +1819,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1261309532704681714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7778320220841255887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 521158675091da14398b47efce58a7cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2048969961546353903
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -7,9 +5,9 @@ public class CanvasFail : UICanvas
 {
     [SerializeField] TextMeshProUGUI scoreText;
 
-    public void SetBaseScore(int baseScore)
+    public void SetBaseScore(LevelScoreResult result)
     {
-        scoreText.text = baseScore.ToString();
+        scoreText.text = result.BaseScore.ToString();
     }
 	    public void MainMenuButton()
     {

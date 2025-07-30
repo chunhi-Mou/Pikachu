@@ -4,44 +4,75 @@ using UnityEngine.Serialization;
 
 public class LevelManager : Singleton<LevelManager>
 {
-    [SerializeField] private GameTile gameTilePrefab;
+    [Header("Level Data")]
+    [SerializeField] private float levelTime = 90f;
+    [SerializeField] private int addedScore = 5;
     [SerializeField] private Vector2 cellSize = Vector2.one;
+    
+    [Header("Preferences")]
+    [SerializeField] private GameTile gameTilePrefab;
+    [SerializeField] private Timer timer;
+    [SerializeField] private Score score;
+
+    public Score Score => score;
+    public Timer Timer => timer;
+
+
     public Vector2 CellSize => cellSize;
     private readonly string levelName = GameCONST.PRE_LEVEL_NAME;
-    
-    private int currentLevel = 1;
+
     private int height;
     private int width;
     private int[,] matrix;
     private GameTile[,] tiles;
-    
+
+    private int currentLevel = 1;
+
     public Vector3 Origin => GridUtils.CalOrigin(new Vector2Int(width, height), cellSize);
-    
-    protected void Awake()
+
+    private void Awake()
     {
         currentLevel = DataManager.Instance.GetCurLevel();
     }
-    public void ResetLevel()
+    private void OnEnable()
+    {
+        GameEvents.OnTilesMatched += AddScoreOnMatch;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnTilesMatched -= AddScoreOnMatch;
+    }
+
+    private void AddScoreOnMatch()
+    {
+        score.AddScore(addedScore);
+    }
+    
+    #region Level Logic
+    public void ResetPlayedLevel()
     {
         DataManager.Instance.UpdatePlayedLevel(1);
     }
-    public void OnLoadLevel()
+    public void PreLoadLevel()
     {
         ClearGrid();
+        timer.OnInit(levelTime);
+        score.OnInit(0);
         currentLevel = DataManager.Instance.GetCurLevel();
-        Data<int> data = JsonUtils.Load<int>(levelName + currentLevel);
-        matrix = GridData<int>.ConvertGridDataTo2DArray(data.grid);
+    }
+    public void OnLoadLevel()
+    {
+        Data<int> data = JsonUtils.Load<int>(levelName + currentLevel); // Load Data tu Json
+        matrix = GridData<int>.ConvertGridDataTo2DArray(data.grid); //TODO: code chuyen thang ve Matrix khi load
         GenerateGrid(matrix); 
     }
-    public void OnNextLevel(bool isStartGame)
+    public void OnNextLevel()
     {
         currentLevel++;
         DataManager.Instance.UpdatePlayedLevel(currentLevel);
-        if (isStartGame)
-        {
-            GameManager.Instance.StartGame();
-        }
     }
+    #endregion
     
     #region Grid Handler
     private void GenerateGrid(int[,] gridData)

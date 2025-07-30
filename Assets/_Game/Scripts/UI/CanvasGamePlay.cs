@@ -5,27 +5,26 @@ using UnityEngine.UI;
 public class CanvasGamePlay : UICanvas
 {
     [Header("Level Info")]
-    [SerializeField] TextMeshProUGUI scoreText;
-    [SerializeField] TextMeshProUGUI timerText;
-    [SerializeField] Slider timeSlider;
+    [SerializeField] private Slider timeSlider;
+    [SerializeField] private float levelTime = 90f;
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI timerText;
 
     public override void Setup()
     {
         base.Setup();
-        GameManager.Instance.OnScoreUpdate += UpdateScore;
-        GameManager.Instance.OnTimerUpdate += UpdateTimer;
-        
-        timeSlider.maxValue = GameManager.Instance.LevelTime;
+        InitializeUI();
     }
-    
-    public override void Close(float delayTime)
+
+    private void InitializeUI()
     {
-        base.Close(delayTime);
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.OnScoreUpdate -= UpdateScore;
-            GameManager.Instance.OnTimerUpdate -= UpdateTimer;
-        }
+        timeSlider.maxValue = levelTime;
+        timeSlider.value = levelTime;
+        UpdateScore(0);
+        UpdateTimer(levelTime);
+        
+        // Reset boosters when starting new game
+        BoosterManager.Instance.ResetBoosters();
     }
 
     public void SettingsButton()
@@ -33,16 +32,30 @@ public class CanvasGamePlay : UICanvas
         UIManager.Instance.OpenUI<CanvasSettings>().SetState(this);
     }
 
-    private void UpdateScore(int newScore)
+    public void UpdateScore(int newScore)
     {
-        scoreText.text = newScore.ToString();
+        scoreText.text = newScore.ToString("N0"); // Format với comma separator
     }
 
-    private void UpdateTimer(float time)
+    public void UpdateTimer(float timeRemaining)
     {
-        int minutes = Mathf.FloorToInt(time / 60);
-        int seconds = Mathf.FloorToInt(time % 60);
+        // Clamp để đảm bảo không âm
+        timeRemaining = Mathf.Max(0, timeRemaining);
+        
+        int minutes = Mathf.FloorToInt(timeRemaining / 60f);
+        int seconds = Mathf.FloorToInt(timeRemaining % 60f);
+        
         timerText.text = $"{minutes:00}:{seconds:00}";
-        timeSlider.value = time;
+        timeSlider.value = timeRemaining;
+        
+        // Visual feedback khi gần hết thời gian
+        if (timeRemaining <= 10f && timeRemaining > 0)
+        {
+            timerText.color = Color.red;
+        }
+        else
+        {
+            timerText.color = Color.white;
+        }
     }
 }

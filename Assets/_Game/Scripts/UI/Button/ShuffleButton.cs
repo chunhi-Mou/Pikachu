@@ -3,31 +3,33 @@ using UnityEngine;
 
 public class ShuffleButton : BaseButton
 {
-    [SerializeField] private TextMeshProUGUI countShuffleUsed;
-    
-    protected override void OnEnable()
+    [Header("Shuffle Specific")]
+    [SerializeField] private TextMeshProUGUI boosterCntText;
+
+    protected override void RegisterEvents()
     {
-        base.OnEnable();
-        GameManager.Instance.OnShuffleCntUpdate += UpdateShuffleCount;
-        UpdateShuffleCount(GameManager.Instance.ShuffleUse); 
+        BoosterManager.OnShuffleCountChanged += UpdateShuffleDisplay;
+        UpdateShuffleDisplay(BoosterManager.Instance.CurrentShuffleUse);
     }
 
-    protected override void OnButtonClicked()
+    protected override void UnregisterEvents()
     {
-        base.OnButtonClicked();
-        GameManager.Instance.UseShuffle();
+        BoosterManager.OnShuffleCountChanged -= UpdateShuffleDisplay;
     }
 
-    private void UpdateShuffleCount(int count)
+    protected override bool ExecuteButtonAction()
     {
-        if (count <= 0)
-        {
-            SetButtonVisual(false);
-        }
-        else
-        {
-            SetButtonVisual(true);
-            countShuffleUsed.text = count.ToString();
-        }
+        return BoosterManager.Instance.TryUseShuffle();
+    }
+
+    private void UpdateShuffleDisplay(int count)
+    {
+        bool hasShuffles = count > 0;
+        SetButtonState(hasShuffles, count.ToString());
+    }
+
+    protected override void UpdateCountDisplay(string countText)
+    {
+        boosterCntText.text = countText;
     }
 }

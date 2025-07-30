@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 39137463}
   - component: {fileID: 39137465}
   - component: {fileID: 39137466}
+  - component: {fileID: 39137467}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -153,9 +154,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 626e08362222dc5479d365c807b20cf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelTime: 60
-  maxShuffleUse: 1
-  maxHintUse: 1
 --- !u!4 &39137464
 Transform:
   m_ObjectHideFlags: 0
@@ -195,6 +193,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b467285a9df09c46a6636cca961b097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &39137467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39137462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521158675091da14398b47efce58a7cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxShuffleUse: 1
+  maxHintUse: 1
 --- !u!1 &83422889
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,6 +217,8 @@ GameObject:
   m_Component:
   - component: {fileID: 83422891}
   - component: {fileID: 83422890}
+  - component: {fileID: 83422893}
+  - component: {fileID: 83422892}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -224,8 +238,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca811219e640b047883982233c39aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameTilePrefab: {fileID: 2167322706878924541, guid: a65b3821b6ab7d14bacf721148e3ce3c, type: 3}
+  levelTime: 90
+  addedScore: 5
   cellSize: {x: 0.45, y: 0.45}
+  gameTilePrefab: {fileID: 2167322706878924541, guid: a65b3821b6ab7d14bacf721148e3ce3c, type: 3}
+  timer: {fileID: 83422893}
+  score: {fileID: 83422892}
 --- !u!4 &83422891
 Transform:
   m_ObjectHideFlags: 0
@@ -241,6 +259,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &83422892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 83422889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69f7cc63098b16142bc5c8f811d040b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &83422893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 83422889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc64813cfd64b23438fd24fb7c4fc85c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &424773504
 GameObject:
   m_ObjectHideFlags: 0
@@ -608,7 +650,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineVisual: {fileID: 1243180710}
   deadLockHandler: {fileID: 1243180713}
-  addedScore: 5
 --- !u!4 &1243180712
 Transform:
   m_ObjectHideFlags: 0

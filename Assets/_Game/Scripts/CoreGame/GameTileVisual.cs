@@ -1,42 +1,43 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameTileVisual : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer tileIcon;
-    [SerializeField] private GameObject VFXPrefab;
-    [SerializeField] private GameObject EffectSelected;
-    [SerializeField] private GameObject tileBG;
+    [SerializeField] private GameObject vfxPrefab;
+    [SerializeField] private GameObject effectSelected;
+    [SerializeField] private GameObject tileBg;
     [SerializeField] private new Collider2D collider2D;
-    private Coroutine _playMatchEffectCoroutine;
+    private Coroutine playMatchEffectCoroutine;
 
     public void InitVisual(TileType type, Sprite sprite, bool isPlayable)
     {
         tileIcon.sprite = sprite;
-        VFXPrefab.SetActive(false);
-        EffectSelected.SetActive(false);
-        tileBG.SetActive(isPlayable);
+        vfxPrefab.SetActive(false);
+        effectSelected.SetActive(false);
+        tileBg.SetActive(isPlayable);
         tileIcon.transform.localScale = isPlayable ? Vector2.one : new Vector2(1.13f, 1.13f);
         collider2D.enabled = isPlayable;
     }
 
     public void PlayMatchEffect(Action onDespawn)
     {
-        if (_playMatchEffectCoroutine != null)
+        if (playMatchEffectCoroutine != null)
         {
-            StopCoroutine(_playMatchEffectCoroutine);
+            StopCoroutine(playMatchEffectCoroutine);
         }
-        _playMatchEffectCoroutine = StartCoroutine(PlayMatchEffectRoutine(onDespawn));
+        playMatchEffectCoroutine = StartCoroutine(PlayMatchEffectRoutine(onDespawn));
     }
     private IEnumerator PlayMatchEffectRoutine(Action onDespawn)
     {
-        EffectSelected.SetActive(false);
+        effectSelected.SetActive(false);
         collider2D.enabled = false;
-        VFXPrefab.SetActive(true);
+        vfxPrefab.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         onDespawn?.Invoke();
     }
-    public void SetSelected(bool selected) => EffectSelected.SetActive(selected);
+    public void SetSelected(bool selected) => effectSelected.SetActive(selected);
 }
 
