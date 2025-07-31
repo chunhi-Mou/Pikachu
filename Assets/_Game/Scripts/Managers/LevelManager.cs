@@ -6,6 +6,7 @@ public class LevelManager : Singleton<LevelManager>
 {
     [Header("Level Data")]
     [SerializeField] private float levelTime = 90f;
+    public float LevelTime => levelTime;
     [SerializeField] private int addedScore = 5;
     [SerializeField] private Vector2 cellSize = Vector2.one;
     

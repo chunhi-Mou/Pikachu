@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6987401614884362269}
   - component: {fileID: 2276605751396895857}
+  - component: {fileID: 2930151450852279305}
   m_Layer: 5
   m_Name: BoxInfo
   m_TagString: Untagged
@@ -67,6 +68,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!225 &2930151450852279305
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21563476546427264}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &255233458939935860
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,7 +750,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 83886079
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1928,7 +1941,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 83886079
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -2384,7 +2397,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 83886079
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -2875,6 +2888,7 @@ GameObject:
   - component: {fileID: 1318853485554710526}
   - component: {fileID: 8845788041419810482}
   - component: {fileID: 3573670756438839956}
+  - component: {fileID: 1546587772100628838}
   m_Layer: 5
   m_Name: Canvas - Victory
   m_TagString: Untagged
@@ -2983,6 +2997,27 @@ MonoBehaviour:
   highestScoreText: {fileID: 3614953325542960101}
   totalLvScoreText: {fileID: 3364683930967506030}
   currentScoreText: {fileID: 4308850446268807352}
+--- !u!95 &1546587772100628838
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8853322893078667516}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0c70d181893055d43aa5a8e44ae00ab2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8937987431055950767
 GameObject:
   m_ObjectHideFlags: 0

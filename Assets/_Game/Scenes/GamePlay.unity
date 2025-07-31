@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca811219e640b047883982233c39aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelTime: 90
+  levelTime: 5
   addedScore: 5
   cellSize: {x: 0.45, y: 0.45}
   gameTilePrefab: {fileID: 2167322706878924541, guid: a65b3821b6ab7d14bacf721148e3ce3c, type: 3}

@@ -59,6 +59,10 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 4f87ff2e1aa9d1a46b65b8cfd63d9e20, type: 3}
   - id: 1
     clip: {fileID: 8300000, guid: 1b506fe3e7c843748bb2125516a35262, type: 3}
+  - id: 7
+    clip: {fileID: 8300000, guid: 84851e65bad60cd42bd2686091224f37, type: 3}
+  - id: 8
+    clip: {fileID: 8300000, guid: 34c919db99bb8af4a8ab590d5a786299, type: 3}
   fxPoolSize: 10
 --- !u!82 &6657450844492723149
 AudioSource:

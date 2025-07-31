@@ -16,6 +16,8 @@ public enum FxID
     Fail = 4,
     TileSelect = 5,
     MatchFail = 6,
+    MatchSuccess = 7,
+    TimeUp = 8,
 }
 
 [System.Serializable]

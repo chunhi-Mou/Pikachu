@@ -23,5 +23,6 @@ public class CanvasMainMenu : UICanvas
     public void SettingsButton()
     {
         UIManager.Instance.OpenUI<CanvasSettings>().SetState(this);
+        UIManager.Instance.CloseUI<CanvasGamePlay>(0);
     }
 }

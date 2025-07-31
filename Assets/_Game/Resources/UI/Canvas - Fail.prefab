@@ -74,7 +74,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 16777215
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -241,6 +241,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5055949699551498142}
   - component: {fileID: 5810903056221639246}
+  - component: {fileID: 672304228064916347}
   m_Layer: 5
   m_Name: BoxInfo
   m_TagString: Untagged
@@ -292,6 +293,18 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 40}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!225 &672304228064916347
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2329661566552798669}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2629652624881738836
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,6 +318,7 @@ GameObject:
   - component: {fileID: 962177013404063632}
   - component: {fileID: 6599698451523585357}
   - component: {fileID: 6143843728371110040}
+  - component: {fileID: 1038755757463770656}
   m_Layer: 5
   m_Name: Canvas - Fail
   m_TagString: Untagged
@@ -409,6 +423,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDestroyOnClose: 0
   scoreText: {fileID: 5667863637783195549}
+--- !u!95 &1038755757463770656
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2629652624881738836}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4f348b9b946bcac4fb4e6b86a7c0b337, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3548194366249308545
 GameObject:
   m_ObjectHideFlags: 0

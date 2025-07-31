@@ -13,7 +13,7 @@ public class GameManager : Singleton<GameManager> //TODO: Refactor
     {
         gameState = state;
     }
-
+    
     public static bool IsState(GameState state) => gameState == state;
     
     private void Awake()
