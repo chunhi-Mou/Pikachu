@@ -52,7 +52,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a9dfa0bae9852224280323bb8e6de2a9, type: 3}
   fxList:
   - id: 0
-    clip: {fileID: 8300000, guid: f31cb8f7cf84db9448434ad5fa7b32f3, type: 3}
+    clip: {fileID: 8300000, guid: 858aa045097592944afc390dacf654e9, type: 3}
   - id: 5
     clip: {fileID: 8300000, guid: 556bc3409aac3d24f9f56c15582ca29f, type: 3}
   - id: 2
@@ -63,6 +63,10 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 84851e65bad60cd42bd2686091224f37, type: 3}
   - id: 8
     clip: {fileID: 8300000, guid: 34c919db99bb8af4a8ab590d5a786299, type: 3}
+  - id: 9
+    clip: {fileID: 8300000, guid: 82c74e6a3e1cd4c4fa07c35443b88d8a, type: 3}
+  - id: 10
+    clip: {fileID: 8300000, guid: b75c8a9c715c3254cafb5096e73922b5, type: 3}
   fxPoolSize: 10
 --- !u!82 &6657450844492723149
 AudioSource:
@@ -76,7 +80,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.4
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -22,14 +22,14 @@ public class LevelManager : Singleton<LevelManager>
     public Vector2 CellSize => cellSize;
     private readonly string levelName = GameCONST.PRE_LEVEL_NAME;
 
-    private int height;
-    private int width;
+    private int rows;
+    private int cols;
     private int[,] matrix;
     private GameTile[,] tiles;
 
     private int currentLevel = 1;
 
-    public Vector3 Origin => GridUtils.CalOrigin(new Vector2Int(width, height), cellSize);
+    public Vector3 Origin => GridUtils.CalOrigin(new Vector2Int(cols, rows), cellSize);
 
     private void Awake()
     {
@@ -78,19 +78,19 @@ public class LevelManager : Singleton<LevelManager>
     #region Grid Handler
     private void GenerateGrid(int[,] gridData)
     {
-        int rawHeight = gridData.GetLength(0);
-        int rawWidth = gridData.GetLength(1);
+        int rawRows = gridData.GetLength(0);
+        int rawCols = gridData.GetLength(1);
 
-        height = rawHeight + 2; // THÊM PADDING
-        width = rawWidth + 2;
+        rows = rawRows + 2; // THÊM PADDING
+        cols = rawCols + 2;
 
         // Khởi tạo mảng có padding
-        tiles = new GameTile[height, width];
-        matrix = new int[height, width];
+        tiles = new GameTile[rows, cols];
+        matrix = new int[rows, cols];
 
-        for (int i = 0; i < rawHeight; i++)
+        for (int i = 0; i < rawRows; i++)
         {
-            for (int j = 0; j < rawWidth; j++)
+            for (int j = 0; j < rawCols; j++)
             {
                 // Dữ liệu từ JSON nằm trong phần lõi (không bao gồm padding)
                 int paddedI = i + 1;

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +10,9 @@ public class CanvasGamePlay : UICanvas
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private Animator scoreAnimator;
     [SerializeField] private Animator clockAnimator;
-    
+
+    private string currScoreAnim;
+    private string currClockAnim;
     private bool hasPlayedWarning = false;
     private float levelTime = 90f;
     public override void Setup()
@@ -29,14 +29,14 @@ public class CanvasGamePlay : UICanvas
         hasPlayedWarning = false;
         UpdateScore(0);
         UpdateTimer(levelTime);
-        scoreAnimator.SetTrigger(GameCONST.SCORE_UI_NONE);
-        clockAnimator.SetTrigger(GameCONST.CLOCK_NONE);
+        AnimatorUtils.ChangeAnim(GameCONST.SCORE_UI_NONE, scoreAnimator, ref currScoreAnim);
+        AnimatorUtils.ChangeAnim(GameCONST.CLOCK_NONE, clockAnimator, ref currClockAnim);
         BoosterManager.Instance.ResetBoosters();
     }
 
     public void SettingsButton()
     {
-        UIManager.Instance.OpenUI<CanvasSettings>().SetState(this);
+        UIManager.Instance.OpenUI<CanvasSettings>().SetState(SettingsContext.FromGameplay);
     }
 
     public void UpdateScore(int newScore)
@@ -44,16 +44,9 @@ public class CanvasGamePlay : UICanvas
         scoreText.text = newScore.ToString("N0");
         if (newScore != 0)
         {
-            StartCoroutine(ScoreUpdatedAnim(0.8f));
+            SoundManager.Instance.PlayFx(FxID.MatchSuccess);
+            AnimatorUtils.ChangeAnim(GameCONST.SCORE_UI_UPDATE, scoreAnimator, ref currScoreAnim);
         }
-    }
-
-    private IEnumerator ScoreUpdatedAnim(float delay)
-    {
-        SoundManager.Instance.PlayFx(FxID.MatchSuccess);
-        scoreAnimator.SetTrigger(GameCONST.SCORE_UI_UPDATE);
-        yield return new WaitForSeconds(delay);
-        scoreAnimator.SetTrigger(GameCONST.SCORE_UI_NONE);
     }
     
     public void UpdateTimer(float timeRemaining)
@@ -74,7 +67,7 @@ public class CanvasGamePlay : UICanvas
             {
                 SoundManager.Instance.PlayFx(FxID.TimeUp);
                 hasPlayedWarning = true;
-                StartCoroutine(TimeUpAnim(10f));
+                AnimatorUtils.ChangeAnim(GameCONST.CLOCK_TIMEUP, clockAnimator, ref currClockAnim);
             }
             timerText.color = Color.red;
         }
@@ -82,12 +75,5 @@ public class CanvasGamePlay : UICanvas
         {
             timerText.color = Color.white;
         }
-    }
-
-    private IEnumerator TimeUpAnim(float delay)
-    {
-        clockAnimator.SetTrigger(GameCONST.CLOCK_TIMEUP);
-        yield return new WaitForSeconds(delay);
-        clockAnimator.SetTrigger(GameCONST.CLOCK_NONE);
     }
 }

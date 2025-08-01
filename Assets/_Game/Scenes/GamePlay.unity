@@ -206,8 +206,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 521158675091da14398b47efce58a7cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxShuffleUse: 1
-  maxHintUse: 1
+  maxShuffleUse: 5
+  maxHintUse: 5
 --- !u!1 &83422889
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca811219e640b047883982233c39aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelTime: 5
+  levelTime: 90
   addedScore: 5
   cellSize: {x: 0.45, y: 0.45}
   gameTilePrefab: {fileID: 2167322706878924541, guid: a65b3821b6ab7d14bacf721148e3ce3c, type: 3}

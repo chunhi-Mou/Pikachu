@@ -9,8 +9,8 @@ public class TileManager : Singleton<TileManager>
     [SerializeField] LineVisual lineVisual;
     [SerializeField] DeadLockHandler deadLockHandler;
     
-    private int width;
-    private int height;
+    private int cols;
+    private int rows;
     private GameTile[,] tiles;
     private Dictionary<TileType, List<Vector2Int>> tileTypeDic;
     
@@ -47,15 +47,15 @@ public class TileManager : Singleton<TileManager>
     
     public void SetTilesData(GameTile[,] newTiles) // Nhận data đã khởi tạo
     {
-        height = newTiles.GetLength(0);
-        width = newTiles.GetLength(1);
+        rows = newTiles.GetLength(0);
+        cols = newTiles.GetLength(1);
         tiles = newTiles;
         
         //UPDATE TILE DIC
         tileTypeDic.Clear();
-        for (int i = 1; i < height - 1; i++)
+        for (int i = 1; i < rows - 1; i++)
         {
-            for (int j = 1; j < width - 1; j++)
+            for (int j = 1; j < cols - 1; j++)
             {
                 GameTile tile = newTiles[i, j];
                 if (tile != null)
@@ -105,14 +105,17 @@ public class TileManager : Singleton<TileManager>
     public void ShuffleTiles()
     {
         List<TileType> activePos = new List<TileType>();
+        GameTile[,] shuffleTiles = tiles;
+
         // Chọn ra những Tiles được Shuffle
-        for (int i = 1; i < width-1; i++)
+        for (int i = 1; i < rows-1; i++)
         {
-            for (int j = 1; j < height-1; j++)
+            for (int j = 1; j < cols-1; j++)
             {
-                if (tiles[i, j] != null && (int)tiles[i, j].TileType < (int)TileType.Obstacles) // Không xào vật cản
+                if (shuffleTiles[i, j] != null 
+                    && (int)shuffleTiles[i, j].TileType < (int)TileType.Obstacles) // Không xào vật cản
                 {
-                    activePos.Add(tiles[i, j].TileType);
+                    activePos.Add(shuffleTiles[i, j].TileType);
                 }
             }
         }
@@ -121,18 +124,18 @@ public class TileManager : Singleton<TileManager>
         
         //Update lại Tiles chính
         int visitedIdx = 0;
-        for (int i = 1; i < width-1; i++)
+        for (int i = 1; i < rows-1; i++)
         {
-            for (int j = 1; j < height-1; j++)
+            for (int j = 1; j < cols-1; j++)
             {
                 if (tiles[i, j] != null && (int)tiles[i, j].TileType < (int)TileType.Obstacles) // Không xào Vật cản
                 {
-                    tiles[i, j].SetCellType((int)activePos[visitedIdx++]);
+                    shuffleTiles[i, j].SetCellType((int)activePos[visitedIdx++]);
                 }
             }
         }
         
-        SetTilesData(tiles);
+        SetTilesData(shuffleTiles);
         CheckDeadLock();
     }
     private void CheckDeadLock()
@@ -189,8 +192,8 @@ public class TileManager : Singleton<TileManager>
     }
     private bool IsInBounds(Vector2Int pos)
     {
-        return pos.x >= 0 && pos.x < width &&
-               pos.y >= 0 && pos.y < height;
+        return pos.x >= 0 && pos.x < cols &&
+               pos.y >= 0 && pos.y < rows;
     }
     #endregion
 }

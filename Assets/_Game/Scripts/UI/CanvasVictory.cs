@@ -20,11 +20,13 @@ public class CanvasVictory : UICanvas
     }
 	    public void MainMenuButton()
     {
+        SoundManager.Instance.PlayFx(FxID.Button);
         Close(0);
         UIManager.Instance.OpenUI<CanvasMainMenu>();
     }
     public void NextLevelButton()
     {
+        SoundManager.Instance.PlayFx(FxID.Button);
         GameManager.Instance.StartGame();
     }
 }

@@ -1,45 +1,65 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
+public enum SettingsContext
+{
+    FromMainMenu,
+    FromGameplay
+}
 public class CanvasSettings : UICanvas
 {
-    //[SerializeField] private GameObject[] buttons;
+    [SerializeField] private GameObject mainMenuButtons;
+    [SerializeField] private GameObject gameplayButtons;
     [SerializeField] private Animator settingsUIAnimator;
-    public void SetState(UICanvas canvas)
+    private SettingsContext currSettingsContext;
+    private string currSettingsUIAnim;
+    public void SetState(SettingsContext context)
     {
+        SoundManager.Instance.PlayFx(FxID.SwipeOn);
         GameManager.ChangeState(GameState.Setting);
-        settingsUIAnimator.SetTrigger(GameCONST.SETTINGS_ON);
-        /*for (int i = 0; i < buttons.Length; i++)
-        {
-            buttons[i].gameObject.SetActive(false);
-        }
-        
-        if (canvas is CanvasMainMenu)
-        {
-            buttons[2].gameObject.SetActive(true); // -> Not opt yet
-        } else if (canvas is CanvasGamePlay)
-        {
-            buttons[0].gameObject.SetActive(true);
-            buttons[1].gameObject.SetActive(true);
-        }*/
+        AnimatorUtils.ChangeAnim(GameCONST.SETTINGS_ON, settingsUIAnimator, ref currSettingsUIAnim);
+        currSettingsContext = context;
+        DisplayButtons(currSettingsContext);
     }
 
+    private void DisplayButtons(SettingsContext context)
+    {
+        switch (context)
+        {
+            case SettingsContext.FromMainMenu:
+                mainMenuButtons.gameObject.SetActive(true);
+                gameplayButtons.gameObject.SetActive(false);
+                break;
+            case SettingsContext.FromGameplay:
+                mainMenuButtons.gameObject.SetActive(false);
+                gameplayButtons.gameObject.SetActive(true);
+                break;
+        }
+    }
     public void ContinueButton(float timer)
     {
-        StartCoroutine(ContinueGamePlay(0.2f, timer));
+        StartCoroutine(ContinueGamePlay(0.2f, timer, currSettingsContext));
     }
-
-    private IEnumerator ContinueGamePlay(float delay, float timer)
+    private IEnumerator ContinueGamePlay(float delay, float timer, SettingsContext context)
     {
-        settingsUIAnimator.SetTrigger(GameCONST.SETTINGS_OFF);
+        SoundManager.Instance.PlayFx(FxID.SwipeOff);
+        AnimatorUtils.ChangeAnim(GameCONST.SETTINGS_OFF, settingsUIAnimator, ref currSettingsUIAnim);
+        switch (context)
+        {
+            case SettingsContext.FromMainMenu:
+                mainMenuButtons.gameObject.SetActive(false);
+                break;
+            case SettingsContext.FromGameplay:
+                gameplayButtons.gameObject.SetActive(false);
+                GameManager.ChangeState(GameState.GamePlay);
+                break;
+        }
         yield return new WaitForSeconds(delay);
-        GameManager.ChangeState(GameState.GamePlay);
         UIManager.Instance.CloseUI<CanvasSettings>(timer);
     }
     public void MainMenuButton()
     {
+        SoundManager.Instance.PlayFx(FxID.Button);
         UIManager.Instance.CloseAllUI();
         GameManager.ChangeState(GameState.MainMenu);
         UIManager.Instance.OpenUI<CanvasMainMenu>();

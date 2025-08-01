@@ -17,12 +17,14 @@ public class CanvasMainMenu : UICanvas
     }
     public void PlayButton()
     {
+        SoundManager.Instance.PlayFx(FxID.Button);
         GameManager.Instance.StartGame();
     }
 
     public void SettingsButton()
     {
-        UIManager.Instance.OpenUI<CanvasSettings>().SetState(this);
+        SoundManager.Instance.PlayFx(FxID.Button);
+        UIManager.Instance.OpenUI<CanvasSettings>().SetState(SettingsContext.FromMainMenu);
         UIManager.Instance.CloseUI<CanvasGamePlay>(0);
     }
 }

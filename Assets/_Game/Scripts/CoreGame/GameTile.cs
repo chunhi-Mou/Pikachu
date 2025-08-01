@@ -33,9 +33,9 @@ public class GameTile : MonoBehaviour
         visual.SetSelected(true);
     }
 
-    public void HandleDeSelected()
+    public void HandleDeSelected(float delay)
     {
-        StartCoroutine(DeSelectDelay(0.2f));
+        StartCoroutine(DeSelectDelay(delay));
     }
     private IEnumerator DeSelectDelay (float delay)
     {

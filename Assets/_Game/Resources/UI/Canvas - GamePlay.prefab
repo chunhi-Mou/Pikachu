@@ -447,7 +447,7 @@ MonoBehaviour:
   countIcon: {fileID: 4264922790332411339}
   buttonShiftY: -6
   animationDuration: 0.2
-  boosterCntText: {fileID: 6830648102529425395}
+  boosterCntText: {fileID: 7432332578860880381}
 --- !u!1 &2505341504815099752
 GameObject:
   m_ObjectHideFlags: 0

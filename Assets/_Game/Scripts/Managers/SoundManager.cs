@@ -18,6 +18,8 @@ public enum FxID
     MatchFail = 6,
     MatchSuccess = 7,
     TimeUp = 8,
+    SwipeOn = 9,
+    SwipeOff = 10,
 }
 
 [System.Serializable]

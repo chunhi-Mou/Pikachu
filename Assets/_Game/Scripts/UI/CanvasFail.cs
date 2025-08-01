@@ -11,6 +11,7 @@ public class CanvasFail : UICanvas
     }
 	    public void MainMenuButton()
     {
+        SoundManager.Instance.PlayFx(FxID.Button);
         Close(0);
         UIManager.Instance.OpenUI<CanvasMainMenu>();
     }
