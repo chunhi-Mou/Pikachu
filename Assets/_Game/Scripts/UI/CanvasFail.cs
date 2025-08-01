@@ -9,10 +9,16 @@ public class CanvasFail : UICanvas
     {
         scoreText.text = result.BaseScore.ToString();
     }
-	    public void MainMenuButton()
+    public void MainMenuButton()
     {
         SoundManager.Instance.PlayFx(FxID.Button);
         Close(0);
         UIManager.Instance.OpenUI<CanvasMainMenu>();
+    }
+        
+    public void ReplayButton()
+    {
+        SoundManager.Instance.PlayFx(FxID.Button);
+        GameManager.Instance.StartGame();
     }
 }
