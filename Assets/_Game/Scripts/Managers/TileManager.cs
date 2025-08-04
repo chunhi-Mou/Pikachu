@@ -3,25 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LineVisual))]
-[RequireComponent(typeof(DeadLockHandler))]
 public class TileManager : Singleton<TileManager>
 {
     [SerializeField] LineVisual lineVisual;
-    [SerializeField] DeadLockHandler deadLockHandler;
     
     private int cols;
     private int rows;
     private GameTile[,] tiles;
+    private List<Vector2Int> path;
     private Dictionary<TileType, List<Vector2Int>> tileTypeDic;
     
-    private List<Vector2Int> path;
     private void OnEnable()
     {
         GameEvents.OnValidPairClicked += ProcessMatch;
         GameEvents.OnDeadlockDetected += ShuffleTiles;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         GameEvents.OnValidPairClicked -= ProcessMatch;
         GameEvents.OnDeadlockDetected -= ShuffleTiles;
@@ -33,13 +31,81 @@ public class TileManager : Singleton<TileManager>
     }
     public GameTile GetGameplayTileAt(Vector2Int pos) {
         GameTile tile = tiles[pos.y, pos.x];
-        if (tile != null && tile.TileType >= TileType.Obstacles)
+        if (tile != null && tile.IsObstacles())
         {
             return null;
         }
         return tiles[pos.y, pos.x];
     }
-    public bool CheckPathExits(Vector2Int startPos, Vector2Int endPos)
+    
+    public GameTile FindObstacle() // Tìm VẬT CẢN mà gây ra Deadlock
+    {
+        // Lấy danh sách tất cả các ô vật cản
+        List<GameTile> obstacles = new List<GameTile>();
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (tiles[i, j] != null && tiles[i, j].IsObstacles() && tiles[i, j].gameObject.activeSelf)
+                {
+                    obstacles.Add(tiles[i, j]);
+                }
+            }
+        }
+        
+        // Duyệt qua từng vật cản để thử loại bỏ
+        foreach (GameTile obstacle in obstacles)
+        {
+            Vector2Int obstaclePos = obstacle.Position;
+            tiles[obstaclePos.y, obstaclePos.x] = null;
+            if (!IsDeadlocked(this.tileTypeDic)) // Nếu không còn deadlock
+            {
+                tiles[obstaclePos.y, obstaclePos.x] = null;
+                return obstacle; // CẦN TÌM
+            }
+            tiles[obstaclePos.y, obstaclePos.x] = obstacle;
+        }
+        return null;
+    }
+    void HandleDeadlock()
+    {
+        for (int i = 0; i < 100; i++) // Xu li 100 lan
+        {
+            if (!IsDeadlocked(this.tileTypeDic))
+            {
+                return; // khong Deadlock -> Dung
+            }
+        }
+        GameTile deadlockObstacle =  FindObstacle();
+        if (deadlockObstacle != null && deadlockObstacle.transform != null)
+        {
+            GameEvents.OnFoundDeadlockObs?.Invoke(deadlockObstacle.transform);
+            deadlockObstacle.HandleMatch();
+        }
+        Debug.Log("Deadlock Detected!");
+    }
+    
+    private bool IsDeadlocked(Dictionary<TileType, List<Vector2Int>> tileTypeDic)
+    {
+        if (tileTypeDic == null) return true;
+        foreach (var tileList in tileTypeDic.Values)
+        {
+            if (tileList.Count < 2) continue;
+
+            for (int i = 0; i < tileList.Count; i++)
+            {
+                for (int j = i + 1; j < tileList.Count; j++)
+                {
+                    if (CheckPathExits(tileList[i], tileList[j]))
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    private bool CheckPathExits(Vector2Int startPos, Vector2Int endPos)
     {
         path = BFSUtils.FindPathPikachu(startPos, endPos, 2, IsWalkable, IsInBounds);
         return path != null && path.Count > 0;
@@ -52,7 +118,8 @@ public class TileManager : Singleton<TileManager>
 
         UpdateTileTypeDictionary(tiles);
     }
-    public void UpdateTileTypeDictionary(GameTile[,] sourceTiles)
+
+    private void UpdateTileTypeDictionary(GameTile[,] sourceTiles)
     {
         tileTypeDic.Clear();
 
@@ -63,13 +130,14 @@ public class TileManager : Singleton<TileManager>
                 GameTile tile = sourceTiles[i, j];
                 if (tile == null) continue;
                 
-                if ((int)tile.TileType < (int)TileType.Obstacles)
+                if (!tile.IsObstacles())
                 {
                     Vector2Int tilePos = new Vector2Int(j, i);
 
                     if (!tileTypeDic.ContainsKey(tile.TileType))
+                    {
                         tileTypeDic[tile.TileType] = new List<Vector2Int>();
-
+                    }
                     tileTypeDic[tile.TileType].Add(tilePos);
                 }
             }
@@ -98,7 +166,7 @@ public class TileManager : Singleton<TileManager>
                 }
             }
         }
-        CheckDeadLock();
+        HandleDeadlock();
     }
     public void ShuffleTiles()
     {
@@ -110,8 +178,7 @@ public class TileManager : Singleton<TileManager>
         {
             for (int j = 1; j < cols-1; j++)
             {
-                if (shuffleTiles[i, j] != null 
-                    && (int)shuffleTiles[i, j].TileType < (int)TileType.Obstacles) // Không xào vật cản
+                if (shuffleTiles[i, j] != null && !shuffleTiles[i, j].IsObstacles()) // Không xào vật cản
                 {
                     activePos.Add(shuffleTiles[i, j].TileType);
                 }
@@ -126,7 +193,7 @@ public class TileManager : Singleton<TileManager>
         {
             for (int j = 1; j < cols-1; j++)
             {
-                if (tiles[i, j] != null && (int)tiles[i, j].TileType < (int)TileType.Obstacles) // Không xào Vật cản
+                if (tiles[i, j] != null && !tiles[i, j].IsObstacles()) // Không xào Vật cản
                 {
                     shuffleTiles[i, j].SetCellType((int)activePos[visitedIdx++]);
                 }
@@ -134,11 +201,7 @@ public class TileManager : Singleton<TileManager>
         }
         
         SetTilesMatrix(shuffleTiles);
-        CheckDeadLock();
-    }
-    private void CheckDeadLock()
-    {
-        deadLockHandler.CheckAndHandleDeadlock(tileTypeDic, CheckPathExits);
+        HandleDeadlock();
     }
     #endregion
     
@@ -158,10 +221,14 @@ public class TileManager : Singleton<TileManager>
                 StartCoroutine(WinRoutine());
             }
         }
+        else
+        {
+            HandleDeadlock();
+        }
     }
     private void HandleTileMatched(GameTile tile) // Xử logic Match Tile ĐƠN LẺ
     {
-        tile.HandleMatch();
+        tile.HandleMatch(); // Gọi để tile tự xử lí khi match
         tileTypeDic[tile.TileType].Remove(tile.Position);
         tiles[tile.Position.y, tile.Position.x] = null;
         if (tileTypeDic[tile.TileType].Count == 0) // Không còn cặp nào
@@ -183,7 +250,7 @@ public class TileManager : Singleton<TileManager>
     }
     #endregion
     
-    #region Hàm hỗ trợ BFS
+    #region Helper
     private bool IsWalkable(Vector2Int pos)
     {
         return tiles[pos.y, pos.x] == null;

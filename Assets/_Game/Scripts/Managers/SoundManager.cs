@@ -94,10 +94,10 @@ public class SoundManager : Singleton<SoundManager>
 
     private void OnInitSettings()
     {
-        bool isMusicOn = DataManager.Instance.GetSoundState(GameCONST.VOLUME_OF_MUSIC);
+        bool isMusicOn = DataManager.Instance.GetSoundState(GameCONST.Mixer_VOLUME_OF_MUSIC);
         ToggleAllMusic(isMusicOn);
 
-        bool isFxOn = DataManager.Instance.GetSoundState(GameCONST.VOLUME_OF_FX);
+        bool isFxOn = DataManager.Instance.GetSoundState(GameCONST.Mixer_VOLUME_OF_FX);
         ToggleAllFx(isFxOn);
     }
 
@@ -128,24 +128,24 @@ public class SoundManager : Singleton<SoundManager>
 
     public void ToggleAllFx(bool isOn)
     {
-        SetVolume(fxMixerGroup.audioMixer, GameCONST.VOLUME_OF_FX, isOn);
-        DataManager.Instance.SaveSoundState(GameCONST.VOLUME_OF_FX, isOn);
+        SetVolume(fxMixerGroup.audioMixer, GameCONST.Mixer_VOLUME_OF_FX, isOn);
+        DataManager.Instance.SaveSoundState(GameCONST.Mixer_VOLUME_OF_FX, isOn);
     }
 
     public void ToggleAllMusic(bool isOn)
     {
-        SetVolume(musicMixerGroup.audioMixer, GameCONST.VOLUME_OF_MUSIC, isOn);
-        DataManager.Instance.SaveSoundState(GameCONST.VOLUME_OF_MUSIC, isOn);
+        SetVolume(musicMixerGroup.audioMixer, GameCONST.Mixer_VOLUME_OF_MUSIC, isOn);
+        DataManager.Instance.SaveSoundState(GameCONST.Mixer_VOLUME_OF_MUSIC, isOn);
     }
     
     public bool GetMusicState()
     {
-        return DataManager.Instance.GetSoundState(GameCONST.VOLUME_OF_MUSIC);
+        return DataManager.Instance.GetSoundState(GameCONST.Mixer_VOLUME_OF_MUSIC);
     }
 
     public bool GetFxState()
     {
-        return DataManager.Instance.GetSoundState(GameCONST.VOLUME_OF_FX);
+        return DataManager.Instance.GetSoundState(GameCONST.Mixer_VOLUME_OF_FX);
     }
 
     #endregion

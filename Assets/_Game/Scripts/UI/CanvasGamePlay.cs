@@ -27,8 +27,8 @@ public class CanvasGamePlay : UICanvas
         hasPlayedWarning = false;
         UpdateScore(0);
         UpdateTimer(levelTime);
-        AnimatorUtils.ChangeAnimUI(GameCONST.SCORE_UI_NONE, scoreAnimator);
-        AnimatorUtils.ChangeAnimUI(GameCONST.CLOCK_NONE, clockAnimator);
+        AnimatorUtils.ChangeAnimUI(GameCONST.Anim_SCORE_UI_NONE, scoreAnimator);
+        AnimatorUtils.ChangeAnimUI(GameCONST.Anim_CLOCK_NONE, clockAnimator);
         BoosterManager.Instance.ResetBoosters();
     }
 
@@ -43,7 +43,7 @@ public class CanvasGamePlay : UICanvas
         if (newScore != 0)
         {
             SoundManager.Instance.PlayFx(FxID.MatchSuccess);
-            AnimatorUtils.ChangeAnimUI(GameCONST.SCORE_UI_UPDATE, scoreAnimator);
+            AnimatorUtils.ChangeAnimUI(GameCONST.Anim_SCORE_UI_UPDATE, scoreAnimator);
         }
     }
     
@@ -65,7 +65,7 @@ public class CanvasGamePlay : UICanvas
             {
                 SoundManager.Instance.PlayFx(FxID.TimeUp);
                 hasPlayedWarning = true;
-                AnimatorUtils.ChangeAnimUI(GameCONST.CLOCK_TIMEUP, clockAnimator);
+                AnimatorUtils.ChangeAnimUI(GameCONST.Anim_CLOCK_TIMEUP, clockAnimator);
             }
             timerText.color = Color.red;
         }

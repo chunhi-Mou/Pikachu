@@ -38,6 +38,10 @@ public class GameTile : MonoBehaviour
             StartCoroutine(DelayedTileUpdate(0.3f));
         }
     }
+    public bool IsObstacles()
+    {
+        return TileType >= TileType.Obstacles;
+    }
     public void HandleSelected()
     {
         SoundManager.Instance.PlayFx(FxID.TileSelect);

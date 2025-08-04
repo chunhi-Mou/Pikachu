@@ -49,14 +49,14 @@ public class GameManager : Singleton<GameManager>
 
     private IEnumerator TransitionLv(float delay) // HIỆU ỨNG CHUYỂN CẢNH
     {
-        transitionAnimator.SetTrigger(GameCONST.TRANSISTION_CLOUD_IN);
+        transitionAnimator.SetTrigger(GameCONST.Anim_CLOUD_IN);
         yield return new WaitForSeconds(delay);
 
         UIManager.Instance.CloseAllUI();
         BoosterManager.Instance.ResetBoosters();
         LevelManager.Instance.PreLoadLevel();
         
-        transitionAnimator.SetTrigger(GameCONST.TRANSISTION_CLOUD_OUT);
+        transitionAnimator.SetTrigger(GameCONST.Anim_CLOUD_OUT);
         
         yield return new WaitForSeconds(delay);
         LevelManager.Instance.OnLoadLevel();

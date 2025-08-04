@@ -3,21 +3,33 @@ using UnityEngine;
 public static class GameCONST
 {
     public const string PRE_LEVEL_NAME = "Level_";
+    
     public const string SCORE = "TotalScor";
     public const string CURRENT_LEVEL = "HighestPlayedLevel";
     public const string HIGHEST_SCORE = "HighestScore";
-    public const string TRANSISTION_CLOUD_IN = "cloudIn";
-    public const string TRANSISTION_CLOUD_OUT = "cloudOut";
-    public const string SCORE_UI_NONE = "scoreUINone";
-    public const string SCORE_UI_UPDATE = "scoreUIUpdate";
-    public const string CLOCK_NONE = "clockNone";
-    public const string CLOCK_TIMEUP = "clockTimeup";
-    public const string SETTINGS_ON = "settingsOn";
-    public const string SETTINGS_OFF = "settingsOff";
-
-    public const string VOLUME_OF_FX = "VolumeOfFX";
-    public const string VOLUME_OF_MUSIC = "VolumeOfMusic";
-
-    public const string TILE_ENTER = "enter";
-    public const string TILE_SHUFFLE = "shuffle";
+        
+    // Animation
+    public const string Anim_SCORE_UI_NONE = "scoreUINone";
+    public const string Anim_SCORE_UI_UPDATE = "scoreUIUpdate";
+    
+    public const string Anim_CLOCK_NONE = "clockNone";
+    public const string Anim_CLOCK_TIMEUP = "clockTimeup";
+    
+    public const string Anim_SETTINGS_ON = "settingsOn";
+    public const string Anim_SETTINGS_OFF = "settingsOff";
+    
+    public const string Anim_TILE_ENTER = "enter";
+    public const string Anim_TILE_SHUFFLE = "shuffle";
+    
+    public const string Anim_CLOUD_IN = "cloudIn";
+    public const string Anim_CLOUD_OUT = "cloudOut";
+    
+    // CHARACTER ANIM
+    public const string Anim_CHAR_IDLE = "idle";
+    public const string Anim_CHAR_ATTACK = "attack";
+    public const string Anim_CHAR_JUMP = "jump";
+    
+    //AUDIO MIXER
+    public const string Mixer_VOLUME_OF_FX = "VolumeOfFX";
+    public const string Mixer_VOLUME_OF_MUSIC = "VolumeOfMusic";
 }

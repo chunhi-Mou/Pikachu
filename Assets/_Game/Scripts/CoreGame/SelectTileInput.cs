@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 // Nhận Input của Player và Chuyển Sang Vị trí Cell -> Thông báo cho TileManager
@@ -63,7 +62,6 @@ public class SelectTileInput : MonoBehaviour
                 tile1.HandleDeSelected(0f);
                 tile1 = tile2;
                 tile2 = null;
-                GameEvents.OnTriggerDeadlockCheck?.Invoke();
             }
         }
     }

@@ -17,7 +17,7 @@ public class CanvasSettings : UICanvas
     {
         SoundManager.Instance.PlayFx(FxID.SwipeOn);
         GameManager.ChangeState(GameState.Setting);
-        AnimatorUtils.ChangeAnimUI(GameCONST.SETTINGS_ON, settingsUIAnimator);
+        AnimatorUtils.ChangeAnimUI(GameCONST.Anim_SETTINGS_ON, settingsUIAnimator);
         currSettingsContext = context;
         DisplayButtons(currSettingsContext);
     }
@@ -43,7 +43,7 @@ public class CanvasSettings : UICanvas
     private IEnumerator ContinueGamePlay(float delay, float timer, SettingsContext context)
     {
         SoundManager.Instance.PlayFx(FxID.SwipeOff);
-        AnimatorUtils.ChangeAnimUI(GameCONST.SETTINGS_OFF, settingsUIAnimator);
+        AnimatorUtils.ChangeAnimUI(GameCONST.Anim_SETTINGS_OFF, settingsUIAnimator);
         switch (context)
         {
             case SettingsContext.FromMainMenu:

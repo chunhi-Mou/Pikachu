@@ -28,11 +28,11 @@ public class GameTileVisual : MonoBehaviour
     }
     private void EnterEffect()
     {
-        AnimatorUtils.ChangeAnimUI(GameCONST.TILE_ENTER, tileAnimator);
+        AnimatorUtils.ChangeAnimUI(GameCONST.Anim_TILE_ENTER, tileAnimator);
     }
     public void ShuffleEffect()
     {
-        AnimatorUtils.ChangeAnimUI(GameCONST.TILE_SHUFFLE, tileAnimator);
+        AnimatorUtils.ChangeAnimUI(GameCONST.Anim_TILE_SHUFFLE, tileAnimator);
     }
     public void PlayMatchEffect(Action onDespawn)
     {
