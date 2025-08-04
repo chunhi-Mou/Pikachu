@@ -10,9 +10,7 @@ public class CanvasGamePlay : UICanvas
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private Animator scoreAnimator;
     [SerializeField] private Animator clockAnimator;
-
-    private string currScoreAnim;
-    private string currClockAnim;
+    
     private bool hasPlayedWarning = false;
     private float levelTime = 90f;
     public override void Setup()
@@ -29,8 +27,8 @@ public class CanvasGamePlay : UICanvas
         hasPlayedWarning = false;
         UpdateScore(0);
         UpdateTimer(levelTime);
-        AnimatorUtils.ChangeAnim(GameCONST.SCORE_UI_NONE, scoreAnimator, ref currScoreAnim);
-        AnimatorUtils.ChangeAnim(GameCONST.CLOCK_NONE, clockAnimator, ref currClockAnim);
+        AnimatorUtils.ChangeAnimUI(GameCONST.SCORE_UI_NONE, scoreAnimator);
+        AnimatorUtils.ChangeAnimUI(GameCONST.CLOCK_NONE, clockAnimator);
         BoosterManager.Instance.ResetBoosters();
     }
 
@@ -45,13 +43,13 @@ public class CanvasGamePlay : UICanvas
         if (newScore != 0)
         {
             SoundManager.Instance.PlayFx(FxID.MatchSuccess);
-            AnimatorUtils.ChangeAnim(GameCONST.SCORE_UI_UPDATE, scoreAnimator, ref currScoreAnim);
+            AnimatorUtils.ChangeAnimUI(GameCONST.SCORE_UI_UPDATE, scoreAnimator);
         }
     }
     
     public void UpdateTimer(float timeRemaining)
     {
-        // Clamp để đảm bảo không âm
+        // Clamp để ko âm
         timeRemaining = Mathf.Max(0, timeRemaining);
         
         int minutes = Mathf.FloorToInt(timeRemaining / 60f);
@@ -67,7 +65,7 @@ public class CanvasGamePlay : UICanvas
             {
                 SoundManager.Instance.PlayFx(FxID.TimeUp);
                 hasPlayedWarning = true;
-                AnimatorUtils.ChangeAnim(GameCONST.CLOCK_TIMEUP, clockAnimator, ref currClockAnim);
+                AnimatorUtils.ChangeAnimUI(GameCONST.CLOCK_TIMEUP, clockAnimator);
             }
             timerText.color = Color.red;
         }

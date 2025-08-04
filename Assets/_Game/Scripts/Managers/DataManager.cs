@@ -34,8 +34,16 @@ public class DataManager : Singleton<DataManager>
     }
     public void UpdatePlayedLevel(int level)
     {
-        int saveLevel = PlayerPrefs.GetInt(GameCONST.CURRENT_LEVEL, level);
         PlayerPrefs.SetInt(GameCONST.CURRENT_LEVEL, level);
+        PlayerPrefs.Save();
+    }
+    public bool GetSoundState(string volumeKey)
+    {
+        return PlayerPrefs.GetInt(volumeKey, 1) == 1;
+    }
+    public void SaveSoundState(string volumeKey, bool isOn)
+    {
+        PlayerPrefs.SetInt(volumeKey, isOn ? 1 : 0);
         PlayerPrefs.Save();
     }
 }

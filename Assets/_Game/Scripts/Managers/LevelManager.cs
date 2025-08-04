@@ -104,15 +104,15 @@ public class LevelManager : Singleton<LevelManager>
                     Vector3 worldPos = GridUtils.GridToWorld(cellSize, Origin, gridPos);
 
                     GameTile newTile = Instantiate(gameTilePrefab, worldPos, Quaternion.identity, transform);
-                    newTile.SetPosition(gridPos.x, gridPos.y);
-                    newTile.SetCellType(gridData[i, j]);
+                    newTile.SetUp(gridPos.x, gridPos.y, (TileType)gridData[i, j]);
+                    newTile.ApplyTileVisual();
 
                     tiles[gridPos.y, gridPos.x] = newTile;
                 }
             }
         }
 
-        TileManager.Instance.SetTilesData(tiles);
+        TileManager.Instance.SetTilesMatrix(tiles);
     }
     //Dọn dẹp grid khi qua level
     private void ClearGrid()

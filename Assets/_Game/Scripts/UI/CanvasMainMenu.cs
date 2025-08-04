@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -20,7 +21,6 @@ public class CanvasMainMenu : UICanvas
         SoundManager.Instance.PlayFx(FxID.Button);
         GameManager.Instance.StartGame();
     }
-
     public void SettingsButton()
     {
         SoundManager.Instance.PlayFx(FxID.Button);

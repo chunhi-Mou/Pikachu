@@ -2,18 +2,9 @@ using UnityEngine;
 
 public static class AnimatorUtils
 {
-    public static void ChangeAnim(string newAnimName, Animator anim, ref string currentAnimName)
+    public static void ChangeAnimUI(string triggerName, Animator anim)
     {
-        if (currentAnimName != newAnimName)
-        {
-            if (!string.IsNullOrEmpty(currentAnimName))
-            {
-                anim.ResetTrigger(currentAnimName);
-            }
-
-            currentAnimName = newAnimName;
-            anim.SetTrigger(currentAnimName);
-        }
+        anim.ResetTrigger(triggerName);
+        anim.SetTrigger(triggerName);
     }
-
 }

@@ -14,4 +14,10 @@ public static class GameCONST
     public const string CLOCK_TIMEUP = "clockTimeup";
     public const string SETTINGS_ON = "settingsOn";
     public const string SETTINGS_OFF = "settingsOff";
+
+    public const string VOLUME_OF_FX = "VolumeOfFX";
+    public const string VOLUME_OF_MUSIC = "VolumeOfMusic";
+
+    public const string TILE_ENTER = "enter";
+    public const string TILE_SHUFFLE = "shuffle";
 }

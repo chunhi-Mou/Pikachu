@@ -12,49 +12,22 @@ public class GameTile : MonoBehaviour
     public TileType TileType => tileType;
     public Vector2Int Position => new Vector2Int(x, y);
 
-    private void Start() => Init();
-
-    public void SetPosition(int gridX, int gridY)
+    public void SetUp(int gridX, int gridY, TileType initTileType) // Init
     {
         x = gridX;
         y = gridY;
+        this.tileType = initTileType;
     }
-
-    private void Init()
+    
+    public void ApplyTileVisual() // Thuc hien Updata hinh anh
     {
         Sprite sprite = tilesData.GetSprite(tileType);
         bool isPlayable = (int)tileType > 0 && (int)tileType < (int)TileType.Obstacles;
         visual.InitVisual(tileType, sprite, isPlayable);
     }
-
-    public void HandleSelected()
+    public void SetCellType(int cellType) // Thay doi Tile khi trong Gameplay
     {
-        SoundManager.Instance.PlayFx(FxID.TileSelect);
-        visual.SetSelected(true);
-    }
-
-    public void HandleDeSelected(float delay)
-    {
-        StartCoroutine(DeSelectDelay(delay));
-    }
-    private IEnumerator DeSelectDelay (float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        visual.SetSelected(false);
-    }
-    public void HandleMatch()
-    {
-        visual.PlayMatchEffect(OnDespawn);
-    }
-
-    private void OnDespawn()
-    {
-        gameObject.SetActive(false);
-    }
-
-    public bool SetCellType(int cellType)
-    {
-        if (!Enum.IsDefined(typeof(TileType), cellType)) return false;
+        if (!Enum.IsDefined(typeof(TileType), cellType)) return;
         tileType = (TileType)cellType;
         if (tileType == TileType.None)
         {
@@ -62,8 +35,36 @@ public class GameTile : MonoBehaviour
         }
         else
         {
-            Init();
+            StartCoroutine(DelayedTileUpdate(0.3f));
         }
-        return true;
+    }
+    public void HandleSelected()
+    {
+        SoundManager.Instance.PlayFx(FxID.TileSelect);
+        visual.SetSelected(true);
+    }
+    public void HandleMatch()
+    {
+        visual.PlayMatchEffect(OnDespawn);
+    }
+    
+    public void HandleDeSelected(float delay)
+    {
+        StartCoroutine(DeSelectDelay(delay));
+    }
+    private void OnDespawn()
+    {
+        gameObject.SetActive(false);
+    }
+    private IEnumerator DeSelectDelay (float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        visual.SetSelected(false);
+    }
+    private IEnumerator DelayedTileUpdate(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        visual.ShuffleEffect();
+        ApplyTileVisual();
     }
 }

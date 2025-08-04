@@ -44,35 +44,33 @@ public class TileManager : Singleton<TileManager>
         path = BFSUtils.FindPathPikachu(startPos, endPos, 2, IsWalkable, IsInBounds);
         return path != null && path.Count > 0;
     }
-    
-    public void SetTilesData(GameTile[,] newTiles) // Nhận data đã khởi tạo
+    public void SetTilesMatrix(GameTile[,] newTiles)
     {
         rows = newTiles.GetLength(0);
         cols = newTiles.GetLength(1);
         tiles = newTiles;
-        
-        //UPDATE TILE DIC
+
+        UpdateTileTypeDictionary(tiles);
+    }
+    public void UpdateTileTypeDictionary(GameTile[,] sourceTiles)
+    {
         tileTypeDic.Clear();
-        for (int i = 1; i < rows - 1; i++)
+
+        for (int i = 1; i < sourceTiles.GetLength(0) - 1; i++)
         {
-            for (int j = 1; j < cols - 1; j++)
+            for (int j = 1; j < sourceTiles.GetLength(1) - 1; j++)
             {
-                GameTile tile = newTiles[i, j];
-                if (tile != null)
+                GameTile tile = sourceTiles[i, j];
+                if (tile == null) continue;
+                
+                if ((int)tile.TileType < (int)TileType.Obstacles)
                 {
-                    tile.SetCellType((int)tile.TileType);
                     Vector2Int tilePos = new Vector2Int(j, i);
 
-                    if ((int)tile.TileType < (int)TileType.Obstacles) {
-                        if (tileTypeDic.ContainsKey(newTiles[i, j].TileType))
-                        {
-                            tileTypeDic[newTiles[i, j].TileType].Add(tilePos);
-                        }
-                        else
-                        {
-                            tileTypeDic[newTiles[i, j].TileType] = new List<Vector2Int>() { tilePos };
-                        }
-                    }
+                    if (!tileTypeDic.ContainsKey(tile.TileType))
+                        tileTypeDic[tile.TileType] = new List<Vector2Int>();
+
+                    tileTypeDic[tile.TileType].Add(tilePos);
                 }
             }
         }
@@ -135,7 +133,7 @@ public class TileManager : Singleton<TileManager>
             }
         }
         
-        SetTilesData(shuffleTiles);
+        SetTilesMatrix(shuffleTiles);
         CheckDeadLock();
     }
     private void CheckDeadLock()

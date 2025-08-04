@@ -39,7 +39,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: VFX
+  m_Name: FX
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: fcaaf3defff3dec449bc2de3e3b5ab2c
   m_Children: []
@@ -67,7 +67,11 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
+  m_ExposedParameters:
+  - guid: 004e70cdb0e0dbc4aba301c1f55bb537
+    name: VolumeOfMusic
+  - guid: 17a4f4117c24b674f97065dcb114f689
+    name: VolumeOfFX
   m_AudioMixerGroupViews:
   - guids:
     - c13bdb5e8fd3f4d4cab4310f4f20b4ad

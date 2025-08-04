@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum GameState { MainMenu, GamePlay, Finish, Revive, Setting, Pause }
 
-public class GameManager : Singleton<GameManager> //TODO: Refactor
+public class GameManager : Singleton<GameManager>
 {
     [SerializeField] Animator transitionAnimator;
     private static GameState gameState;
@@ -44,28 +44,25 @@ public class GameManager : Singleton<GameManager> //TODO: Refactor
     
     public void StartGame()
     {
-        StartCoroutine(TransitionLv(0.4f));
+        StartCoroutine(TransitionLv(0.6f));
     }
 
-    private IEnumerator TransitionLv(float delay)
+    private IEnumerator TransitionLv(float delay) // HIỆU ỨNG CHUYỂN CẢNH
     {
         transitionAnimator.SetTrigger(GameCONST.TRANSISTION_CLOUD_IN);
         yield return new WaitForSeconds(delay);
 
-        // Đóng tất cả UI
         UIManager.Instance.CloseAllUI();
         BoosterManager.Instance.ResetBoosters();
-
-        // Gọi LevelManager để tải màn chơi
         LevelManager.Instance.PreLoadLevel();
-        LevelManager.Instance.OnLoadLevel();
-        yield return new WaitForSeconds(delay);
+        
         transitionAnimator.SetTrigger(GameCONST.TRANSISTION_CLOUD_OUT);
+        
         yield return new WaitForSeconds(delay);
-        yield return null;// Đợi frame mới
-        // Mở màn hình chơi game
-        ChangeState(GameState.GamePlay);
+        LevelManager.Instance.OnLoadLevel();
+        ChangeState(GameState.GamePlay);    
         UIManager.Instance.OpenUI<CanvasGamePlay>();
+
     }
     public void EndGame(bool isVictory)
     {
