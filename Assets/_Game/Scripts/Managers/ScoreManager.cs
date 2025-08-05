@@ -13,7 +13,7 @@ public class LevelScoreResult
     }
 }
 
-public class Score : Singleton<Score>
+public class ScoreManager : Singleton<ScoreManager>
 {
     int curScore = 0;
     public void OnInit(int score)
@@ -33,7 +33,6 @@ public class Score : Singleton<Score>
     {
         int timeBonus = Mathf.RoundToInt(timeRemaining);
         LevelScoreResult result = new LevelScoreResult(curScore, timeBonus);
-        // Lưu vào Data
         DataManager.Instance.SaveWinningScore(result.TotalScore);
 
         return result;
@@ -41,7 +40,7 @@ public class Score : Singleton<Score>
     public LevelScoreResult CalScoreOnLose()
     {
         LevelScoreResult result = new LevelScoreResult(curScore, 0);
-        DataManager.Instance.ResetTotalScore(); //TODO: Revive or Die
+        DataManager.Instance.ResetTotalScore();
         return result;
     }
 }

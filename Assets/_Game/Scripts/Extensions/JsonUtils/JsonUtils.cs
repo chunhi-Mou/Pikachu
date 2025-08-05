@@ -3,7 +3,7 @@ using System.IO;
 // YÊU CẦU: Data.cs - để lưu dữ liệu
 public static class JsonUtils
 {
-    public static readonly string SAVE_FOLDER = 
+    private static readonly string SAVE_FOLDER = 
     #if UNITY_EDITOR
         Application.dataPath + "/JsonLevelFiles"; // Editor chỉ để debug
     #else
@@ -12,7 +12,7 @@ public static class JsonUtils
 
 
     /// <summary>
-    /// Khởi tạo thư mục lưu trữ. Nên được gọi một lần khi game bắt đầu.
+    /// Khởi tạo thư mục lưu trữ
     /// </summary>
     public static void OnInit()
     {
@@ -28,8 +28,6 @@ public static class JsonUtils
     /// <summary>
     /// Lưu một đối tượng Data vào file JSON.
     /// </summary>
-    /// <param name="fileName">Tên file (không cần đuôi .json).</param>
-    /// <param name="data">Đối tượng Data cần lưu.</param>
     public static void Save<T>(string fileName, Data<T> data)
     {
         if (!Directory.Exists(SAVE_FOLDER))
@@ -46,8 +44,6 @@ public static class JsonUtils
     /// <summary>
     /// Tải một đối tượng Data từ file JSON.
     /// </summary>
-    /// <param name="fileName">Tên file (không cần đuôi .json).</param>
-    /// <returns>Đối tượng Data đã được tải, hoặc null nếu file không tồn tại hoặc có lỗi.</returns>
     public static Data<T> Load<T>(string fileName)
     {
         string fullPath = Path.Combine(SAVE_FOLDER, fileName + ".json");

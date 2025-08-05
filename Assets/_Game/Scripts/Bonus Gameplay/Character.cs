@@ -1,11 +1,11 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class Character : MonoBehaviour
 {
 	[SerializeField] Animator anim;
-	private string animName;
+	private string animName = GameCONST.Anim_CHAR_IDLE;
+	private float delayTime = 0.3f;
 
 	private void OnEnable()
 	{
@@ -24,21 +24,29 @@ public class Character : MonoBehaviour
 
 	private void HelpDeadlock(Transform target)
 	{
-		this.transform.localScale = Vector3.one;
-		StartCoroutine(ActionThenHide(0.3f, target));
+		StartCoroutine(ActionThenHide(delayTime, target));
 	}
-
+	
+	/// <summary>
+	/// Thực hiện tại vị trí targer: Nhảy -> Đánh -> Nhảy -> Ẩn
+	/// </summary>
 	private IEnumerator ActionThenHide(float time, Transform target)
 	{
 		this.transform.position = target.position;
+		this.transform.localScale = Vector3.one;
+
 		ChangeAnim(GameCONST.Anim_CHAR_JUMP);
 		yield return new WaitForSeconds(time);
+		
 		ChangeAnim(GameCONST.Anim_CHAR_ATTACK);
 		yield return new WaitForSeconds(time);
+		
 		ChangeAnim(GameCONST.Anim_CHAR_JUMP);
 		yield return new WaitForSeconds(time);
+		
 		this.transform.localScale = Vector3.zero;
 	}
+	
 	private void ChangeAnim(string animName)
 	{
 		if (this.animName != animName)

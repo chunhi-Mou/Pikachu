@@ -16,13 +16,11 @@ public class TileManager : Singleton<TileManager>
     private void OnEnable()
     {
         GameEvents.OnValidPairClicked += ProcessMatch;
-        GameEvents.OnDeadlockDetected += ShuffleTiles;
     }
 
     private void OnDisable()
     {
         GameEvents.OnValidPairClicked -= ProcessMatch;
-        GameEvents.OnDeadlockDetected -= ShuffleTiles;
     }
     private void Awake()
     {
@@ -31,7 +29,7 @@ public class TileManager : Singleton<TileManager>
     }
     public GameTile GetGameplayTileAt(Vector2Int pos) {
         GameTile tile = tiles[pos.y, pos.x];
-        if (tile != null && tile.IsObstacles())
+        if (tile != null && tile.IsObstacle())
         {
             return null;
         }
@@ -46,7 +44,7 @@ public class TileManager : Singleton<TileManager>
         {
             for (int j = 0; j < cols; j++)
             {
-                if (tiles[i, j] != null && tiles[i, j].IsObstacles() && tiles[i, j].gameObject.activeSelf)
+                if (tiles[i, j] != null && tiles[i, j].IsObstacle() && tiles[i, j].gameObject.activeSelf)
                 {
                     obstacles.Add(tiles[i, j]);
                 }
@@ -80,7 +78,7 @@ public class TileManager : Singleton<TileManager>
         if (deadlockObstacle != null && deadlockObstacle.transform != null)
         {
             GameEvents.OnFoundDeadlockObs?.Invoke(deadlockObstacle.transform);
-            deadlockObstacle.HandleMatch();
+            deadlockObstacle.Match();
         }
         Debug.Log("Deadlock Detected!");
     }
@@ -130,7 +128,7 @@ public class TileManager : Singleton<TileManager>
                 GameTile tile = sourceTiles[i, j];
                 if (tile == null) continue;
                 
-                if (!tile.IsObstacles())
+                if (!tile.IsObstacle())
                 {
                     Vector2Int tilePos = new Vector2Int(j, i);
 
@@ -178,7 +176,7 @@ public class TileManager : Singleton<TileManager>
         {
             for (int j = 1; j < cols-1; j++)
             {
-                if (shuffleTiles[i, j] != null && !shuffleTiles[i, j].IsObstacles()) // Không xào vật cản
+                if (shuffleTiles[i, j] != null && !shuffleTiles[i, j].IsObstacle()) // Không xào vật cản
                 {
                     activePos.Add(shuffleTiles[i, j].TileType);
                 }
@@ -193,7 +191,7 @@ public class TileManager : Singleton<TileManager>
         {
             for (int j = 1; j < cols-1; j++)
             {
-                if (tiles[i, j] != null && !tiles[i, j].IsObstacles()) // Không xào Vật cản
+                if (tiles[i, j] != null && !tiles[i, j].IsObstacle()) // Không xào Vật cản
                 {
                     shuffleTiles[i, j].SetCellType((int)activePos[visitedIdx++]);
                 }
@@ -228,7 +226,7 @@ public class TileManager : Singleton<TileManager>
     }
     private void HandleTileMatched(GameTile tile) // Xử logic Match Tile ĐƠN LẺ
     {
-        tile.HandleMatch(); // Gọi để tile tự xử lí khi match
+        tile.Match(); // Gọi để tile tự xử lí khi match
         tileTypeDic[tile.TileType].Remove(tile.Position);
         tiles[tile.Position.y, tile.Position.x] = null;
         if (tileTypeDic[tile.TileType].Count == 0) // Không còn cặp nào

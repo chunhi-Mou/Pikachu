@@ -66,10 +66,10 @@ public static class BFSUtils
                 {
                     nextPos += dir;
 
-                    // 1. Kiểm tra biên
+                    // Kiểm tra biên
                     if (!inBounds(nextPos)) break;
 
-                    // 2. Kiểm tra xem có đến đích không
+                    // Kiểm tra xem có đến đích không
                     if (nextPos == goal)
                     {
                         // Tính số lần rẽ cuối cùng
@@ -91,10 +91,10 @@ public static class BFSUtils
                         }
                     }
 
-                    // 3. Nếu gặp chướng ngại vật (không phải ô trống), dừng đường thẳng này
+                    // Nếu gặp chướng ngại vật -> dừng đường thẳng này
                     if (!isWalkable(nextPos)) break;
 
-                    // 4. Nếu là ô trống, đây là một điểm rẽ tiềm năng
+                    // Nếu là ô trống
                     // Tính số lần rẽ mới
                     int newTurns = node.TurnCount + 1;
                     
@@ -102,7 +102,6 @@ public static class BFSUtils
                     if (!visited.Contains(state))
                     {
                         visited.Add(state);
-                        // Đưa điểm rẽ tiềm năng này vào hàng đợi để xét tiếp
                         queue.Enqueue(new BFSNode(nextPos, dir, newTurns, node));
                     }
                 }

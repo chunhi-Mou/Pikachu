@@ -1,12 +1,11 @@
-using UnityEngine;
-
 public static class GameCONST
 {
+    // Prefix Level JSON Name
     public const string PRE_LEVEL_NAME = "Level_";
     
-    public const string SCORE = "TotalScor";
-    public const string CURRENT_LEVEL = "HighestPlayedLevel";
-    public const string HIGHEST_SCORE = "HighestScore";
+    public const string Data_SCORE = "TotalScor";
+    public const string Data_CURRENT_LEVEL = "HighestPlayedLevel";
+    public const string Data_HIGHEST_SCORE = "HighestScore";
         
     // Animation
     public const string Anim_SCORE_UI_NONE = "scoreUINone";

@@ -41,25 +41,25 @@ public class SelectTileInput : MonoBehaviour
         if (tile1 == null)
         {
             tile1 = clickedTile;
-            tile1.HandleSelected();
+            tile1.Select();
         }
         else
         {
             tile2 = clickedTile;
-            tile2.HandleSelected();
+            tile2.Select();
 
             if (tile1.TileType == tile2.TileType)
             {
                 GameEvents.OnValidPairClicked?.Invoke(tile1, tile2);
-                tile1.HandleDeSelected(0.2f);
-                tile2.HandleDeSelected(0.2f);
+                tile1.Deselect(0.2f);
+                tile2.Deselect(0.2f);
                 tile1 = null;
                 tile2 = null;
             }
             else
             {
                 // Không hợp lệ, hủy chọn tile1, và coi tile2 là tile1 mới
-                tile1.HandleDeSelected(0f);
+                tile1.Deselect(0f);
                 tile1 = tile2;
                 tile2 = null;
             }

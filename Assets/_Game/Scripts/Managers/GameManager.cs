@@ -18,6 +18,7 @@ public class GameManager : Singleton<GameManager>
     
     private void Awake()
     {
+        JsonUtils.OnInit();
         //tranh viec nguoi choi cham da diem vao man hinh
         Input.multiTouchEnabled = false;
         //target frame rate ve 60 fps
@@ -70,18 +71,18 @@ public class GameManager : Singleton<GameManager>
         {
             ChangeState(GameState.Finish);
             UIManager.Instance.CloseUI<CanvasGamePlay>(0f);
-            Score score = LevelManager.Instance.Score;
+            ScoreManager scoreManager = LevelManager.Instance.ScoreManager;
             Timer timer = LevelManager.Instance.Timer;
 
             if (isVictory)
             {
-                LevelScoreResult result = score.CalScoreOnWin(timer.RemainingTime);
+                LevelScoreResult result = scoreManager.CalScoreOnWin(timer.RemainingTime);
                 UIManager.Instance.OpenUI<CanvasVictory>().SetBaseInfo(result);
             }
             else
             {
                 LevelManager.Instance.ResetPlayedLevel();
-                LevelScoreResult result = score.CalScoreOnLose();
+                LevelScoreResult result = scoreManager.CalScoreOnLose();
                 UIManager.Instance.OpenUI<CanvasFail>().SetBaseScore(result);
             }
         }

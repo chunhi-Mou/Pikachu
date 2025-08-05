@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -13,9 +12,9 @@ public class LevelManager : Singleton<LevelManager>
     [Header("Preferences")]
     [SerializeField] private GameTile gameTilePrefab;
     [SerializeField] private Timer timer;
-    [SerializeField] private Score score;
+    [FormerlySerializedAs("score")] [SerializeField] private ScoreManager scoreManager;
     
-    public Score Score => score;
+    public ScoreManager ScoreManager => scoreManager;
     public Timer Timer => timer;
 
 
@@ -47,7 +46,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private void AddScoreOnMatch()
     {
-        score.AddScore(addedScore);
+        scoreManager.AddScore(addedScore);
     }
     
     #region Level Logic
@@ -59,13 +58,13 @@ public class LevelManager : Singleton<LevelManager>
     {
         ClearGrid();
         timer.OnInit(levelTime);
-        score.OnInit(0);
+        scoreManager.OnInit(0);
         currentLevel = DataManager.Instance.GetCurLevel();
     }
     public void OnLoadLevel()
     {
         Data<int> data = JsonUtils.Load<int>(levelName + currentLevel); // Load Data tu Json
-        matrix = GridData<int>.ConvertGridDataTo2DArray(data.grid); //TODO: code chuyen thang ve Matrix khi load
+        matrix = GridData<int>.ConvertGridDataTo2DArray(data.grid);
         GenerateGrid(matrix); 
     }
     public void OnNextLevel()
@@ -104,8 +103,8 @@ public class LevelManager : Singleton<LevelManager>
                     Vector3 worldPos = GridUtils.GridToWorld(cellSize, Origin, gridPos);
 
                     GameTile newTile = Instantiate(gameTilePrefab, worldPos, Quaternion.identity, transform);
-                    newTile.SetUp(gridPos.x, gridPos.y, (TileType)gridData[i, j]);
-                    newTile.ApplyTileVisual();
+                    newTile.OnInit(gridPos.x, gridPos.y, (TileType)gridData[i, j]);
+                    newTile.UpdateVisual();
 
                     tiles[gridPos.y, gridPos.x] = newTile;
                 }

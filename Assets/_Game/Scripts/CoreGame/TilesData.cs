@@ -44,7 +44,9 @@ namespace Scriptable
         public Sprite GetSprite(TileType type)
         {
             if (spriteDict == null || !spriteDict.TryGetValue(type, out var sprite))
+            {
                 return null;
+            }
             return sprite;
         }
     }
