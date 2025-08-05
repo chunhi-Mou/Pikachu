@@ -67,7 +67,11 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 82c74e6a3e1cd4c4fa07c35443b88d8a, type: 3}
   - id: 10
     clip: {fileID: 8300000, guid: b75c8a9c715c3254cafb5096e73922b5, type: 3}
-  fxPoolSize: 10
+  - id: 11
+    clip: {fileID: 8300000, guid: 6916c33f9b94a22489c7d79eee03da27, type: 3}
+  - id: 12
+    clip: {fileID: 8300000, guid: fedeaed0804637547a27b8beb06a2d35, type: 3}
+  fxSize: 10
 --- !u!82 &6657450844492723149
 AudioSource:
   m_ObjectHideFlags: 0

@@ -119,10 +119,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileAnimator: {fileID: 4902008042332272205}
   tileIcon: {fileID: 3832155673863465277}
+  collider2D: {fileID: 1211523698671645224}
   vfxPrefab: {fileID: 6951571477527117116}
   effectSelected: {fileID: 9097227880101343943}
   tileBg: {fileID: 4838790685339396477}
-  collider2D: {fileID: 1211523698671645224}
 --- !u!114 &2167322706878924541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,9 +136,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilesData: {fileID: 11400000, guid: 35b5e8e1d179a8542a151735bec1e19f, type: 2}
-  tileType: 9
-  x: 0
-  y: 0
   visual: {fileID: 2203135572644495989}
 --- !u!1 &4838790685339396477
 GameObject:

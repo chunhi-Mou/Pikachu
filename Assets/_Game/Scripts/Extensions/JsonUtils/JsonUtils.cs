@@ -26,7 +26,7 @@ public static class JsonUtils
     }
 
     /// <summary>
-    /// Lưu một đối tượng Data vào file JSON.
+    /// Lưu một đối tượng Data vào file JSON
     /// </summary>
     public static void Save<T>(string fileName, Data<T> data)
     {
@@ -42,13 +42,13 @@ public static class JsonUtils
     }
 
     /// <summary>
-    /// Tải một đối tượng Data từ file JSON.
+    /// Tải một đối tượng Data từ file JSON
     /// </summary>
     public static Data<T> Load<T>(string fileName)
     {
         string fullPath = Path.Combine(SAVE_FOLDER, fileName + ".json");
 
-        // Kiểm tra xem file có tồn tại không.
+        // Kiểm tra xem file có tồn tại không
         if (File.Exists(fullPath))
         {
             string json = File.ReadAllText(fullPath);//ĐỌC
@@ -58,7 +58,7 @@ public static class JsonUtils
         }
         else
         {
-            // Cảnh báo nếu file không được tìm thấy.
+            // Cảnh báo nếu file không được tìm thấy
             Debug.LogWarning("Không tìm thấy file để tải: " + fullPath);
             return null;
         }

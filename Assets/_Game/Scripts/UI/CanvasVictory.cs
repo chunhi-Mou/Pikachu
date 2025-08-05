@@ -10,6 +10,9 @@ public class CanvasVictory : UICanvas
     [SerializeField] TextMeshProUGUI currentScoreText;
     public void SetBaseInfo(LevelScoreResult result)
     {
+        SoundManager.Instance.PauseMusic();
+        SoundManager.Instance.StopAllFx();
+        SoundManager.Instance.PlayFx(FxID.Win);
         LevelManager.Instance.OnNextLevel();
 
         scoreText.text = result.BaseScore.ToString();
@@ -21,12 +24,14 @@ public class CanvasVictory : UICanvas
 	    public void MainMenuButton()
     {
         SoundManager.Instance.PlayFx(FxID.Button);
+        SoundManager.Instance.ResumeMusic();
         Close(0);
         UIManager.Instance.OpenUI<CanvasMainMenu>();
     }
     public void NextLevelButton()
     {
         SoundManager.Instance.PlayFx(FxID.Button);
+        SoundManager.Instance.ResumeMusic();
         GameManager.Instance.StartGame();
     }
 }

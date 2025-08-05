@@ -10,9 +10,10 @@ public enum SoundID
 
 public enum FxID
 {
-    Button, Shuffle, Hint, Victory, Fail,
-    TileSelect, MatchFail, MatchSuccess,
-    TimeUp, SwipeOn, SwipeOff
+    Button = 0, Shuffle = 1, Hint = 2, Victory = 3, Fail = 4,
+    TileSelect = 5, MatchFail = 6, MatchSuccess = 7,
+    TimeUp = 8, SwipeOn = 9, SwipeOff = 10, Pop = 11,
+    BreakObs = 12, Win = 13, Lose = 14, Enter = 15,
 }
 
 [System.Serializable]
@@ -126,6 +127,30 @@ public class SoundManager : Singleton<SoundManager>
         currentFxSourceIndex = (currentFxSourceIndex + 1) % fxSize;
     }
 
+    public void PauseMusic()
+    {
+        if (musicSource.isPlaying)
+        {
+            musicSource.Pause();
+        }
+    }
+    public void ResumeMusic()
+    {
+        if (!musicSource.isPlaying && musicSource.clip != null)
+        {
+            musicSource.UnPause();
+        }
+    }
+    public void StopAllFx()
+    {
+        foreach (var source in fxSources)
+        {
+            if (source.isPlaying)
+            {
+                source.Stop();
+            }
+        }
+    }
     public void ToggleAllFx(bool isOn)
     {
         SetVolume(fxMixerGroup.audioMixer, GameCONST.Mixer_VOLUME_OF_FX, isOn);

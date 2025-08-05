@@ -94,14 +94,9 @@ public class ToggleSwitch : MonoBehaviour, IPointerClickHandler
         
         private void Toggle()
         {
+            SoundManager.Instance.PlayFx(FxID.Pop);
             SetStateAndStartAnimation(!currentValue);
         }
-
-        public void ToggleByGroupManager(bool valueToSetTo)
-        {
-            SetStateAndStartAnimation(valueToSetTo);
-        }
-        
         
         private void SetStateAndStartAnimation(bool state)
         {
@@ -116,8 +111,15 @@ public class ToggleSwitch : MonoBehaviour, IPointerClickHandler
                     onToggleOff?.Invoke();
             }
 
+            if (!gameObject.activeInHierarchy)
+            {
+                return;
+            }
+
             if (animateSliderCoroutine != null)
+            {
                 StopCoroutine(animateSliderCoroutine);
+            }
 
             animateSliderCoroutine = StartCoroutine(AnimateSlider());
         }

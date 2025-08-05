@@ -12,6 +12,11 @@ public class TileManager : Singleton<TileManager>
     private GameTile[,] tiles;
     private List<Vector2Int> path;
     private Dictionary<TileType, List<Vector2Int>> tileTypeDic;
+    [SerializeField] private float hintDelay = 5f;
+    private float idleTimer;
+    private bool canCheckIdleHint = true;
+    private GameTile cacheHint1;
+    private GameTile cacheHint2;
     
     private void OnEnable()
     {
@@ -27,6 +32,25 @@ public class TileManager : Singleton<TileManager>
         tileTypeDic = new Dictionary<TileType, List<Vector2Int>>();
         path = new List<Vector2Int>();
     }
+    private void Update()
+    {
+        if (!GameManager.IsState(GameState.GamePlay))
+        {
+            idleTimer = 0f;
+            return;
+        }
+
+        if (canCheckIdleHint)
+        {
+            idleTimer += Time.deltaTime;
+            if (idleTimer >= hintDelay)
+            {
+                idleTimer = 0f;
+                ShowHintIfAvailable();
+            }
+        }
+    }
+
     public GameTile GetGameplayTileAt(Vector2Int pos) {
         GameTile tile = tiles[pos.y, pos.x];
         if (tile != null && tile.IsObstacle())
@@ -201,11 +225,65 @@ public class TileManager : Singleton<TileManager>
         SetTilesMatrix(shuffleTiles);
         HandleDeadlock();
     }
+    private void ShowHintIfAvailable()
+    {
+        if (cacheHint1 != null || cacheHint2 != null)
+            return;
+        var keys = new List<TileType>(tileTypeDic.Keys);
+        keys.Shuffle();
+
+        foreach (var key in keys)
+        {
+            List<Vector2Int> hintPos = tileTypeDic[key];
+            for (int i = 0; i < hintPos.Count; i++)
+            {
+                for (int j = i + 1; j < hintPos.Count; j++)
+                {
+                    Vector2Int posA = hintPos[i];
+                    Vector2Int posB = hintPos[j];
+
+                    if (CheckPathExits(posA, posB))
+                    {
+                        var tile1 = tiles[posA.y, posA.x];
+                        var tile2 = tiles[posB.y, posB.x];
+
+                        if (tile1 != null && tile2 != null)
+                        {
+                            cacheHint1 = tile1;
+                            cacheHint2 = tile2;
+
+                            cacheHint1.Hint();
+                            cacheHint2.Hint();
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Nếu không tìm thấy cặp -> deadlock
+        HandleDeadlock();
+    }
+    private void ClearHint()
+    {
+        if (cacheHint1 != null)
+        {
+            cacheHint1.StopHint();
+            cacheHint1 = null;
+        }
+        if (cacheHint2 != null)
+        {
+            cacheHint2.StopHint();
+            cacheHint2 = null;
+        }
+    }
     #endregion
     
     #region Match Logic
     private void ProcessMatch(GameTile tileA, GameTile tileB)
     {
+        idleTimer = 0f;
+        ClearHint();
         if (CheckPathExits(tileA.Position, tileB.Position))
         {
             GameEvents.OnTilesMatched?.Invoke();

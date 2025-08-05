@@ -17,8 +17,10 @@ public static class GameCONST
     public const string Anim_SETTINGS_ON = "settingsOn";
     public const string Anim_SETTINGS_OFF = "settingsOff";
     
+    public const string Anim_TILE_NONE = "none";
     public const string Anim_TILE_ENTER = "enter";
     public const string Anim_TILE_SHUFFLE = "shuffle";
+    public const string Anim_TILE_HINT = "hint";
     
     public const string Anim_CLOUD_IN = "cloudIn";
     public const string Anim_CLOUD_OUT = "cloudOut";

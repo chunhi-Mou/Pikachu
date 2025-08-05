@@ -45,7 +45,7 @@ public class GameManager : Singleton<GameManager>
     
     public void StartGame()
     {
-        StartCoroutine(TransitionLv(0.6f));
+        StartCoroutine(TransitionLv(0.7f));
     }
 
     private IEnumerator TransitionLv(float delay) // HIỆU ỨNG CHUYỂN CẢNH
@@ -60,6 +60,7 @@ public class GameManager : Singleton<GameManager>
         transitionAnimator.SetTrigger(GameCONST.Anim_CLOUD_OUT);
         
         yield return new WaitForSeconds(delay);
+        
         LevelManager.Instance.OnLoadLevel();
         ChangeState(GameState.GamePlay);    
         UIManager.Instance.OpenUI<CanvasGamePlay>();

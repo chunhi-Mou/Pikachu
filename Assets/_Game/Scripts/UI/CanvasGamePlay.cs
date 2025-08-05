@@ -67,7 +67,7 @@ public class CanvasGamePlay : UICanvas
                 hasPlayedWarning = true;
                 AnimatorUtils.ChangeAnimUI(GameCONST.Anim_CLOCK_TIMEUP, clockAnimator);
             }
-            timerText.color = Color.red;
+            timerText.color = new Color(1f, 0.4f, 0.4f); // RGB(255, 102, 102)
         }
         else
         {

@@ -48,9 +48,18 @@ public class GameTile : MonoBehaviour
     }
     public void Match()
     {
-        visual.PlayMatchEffect(OnDespawn);
+        visual.MatchEffect(OnDespawn);
     }
-    
+
+    public void Hint()
+    {
+        visual.HintEffect();
+    }
+
+    public void StopHint()
+    {
+        visual.ResetAnim();
+    }
     public void Deselect(float delay)
     {
         StartCoroutine(DeselectAfterDelay(delay));

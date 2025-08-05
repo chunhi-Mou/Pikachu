@@ -32,7 +32,7 @@ public class GameTileVisual : MonoBehaviour
         AnimatorUtils.ChangeAnimUI(GameCONST.Anim_TILE_SHUFFLE, tileAnimator);
     }
     
-    public void PlayMatchEffect(Action onDespawn)
+    public void MatchEffect(Action onDespawn)
     {
         collider2D.enabled = false;
         effectSelected.SetActive(false);
@@ -40,17 +40,20 @@ public class GameTileVisual : MonoBehaviour
         
         StartCoroutine(DespawnAfterDelay(onDespawn));
     }
-    
-    private void Start()
+
+    public void HintEffect()
     {
-        Invoke(nameof(EnterEffect), 0.3f);
+        AnimatorUtils.ChangeAnimUI(GameCONST.Anim_TILE_HINT, tileAnimator);
+    }
+    public void ResetAnim()
+    {
+        AnimatorUtils.ChangeAnimUI(GameCONST.Anim_TILE_NONE, tileAnimator);
     }
     
-    private void EnterEffect()
+    private void Awake()
     {
-        AnimatorUtils.ChangeAnimUI(GameCONST.Anim_TILE_ENTER, tileAnimator);
+        SoundManager.Instance.PlayFx(FxID.Enter);
     }
-    
     private IEnumerator DespawnAfterDelay(Action onDespawn)
     {
         yield return new WaitForSeconds(0.5f);
