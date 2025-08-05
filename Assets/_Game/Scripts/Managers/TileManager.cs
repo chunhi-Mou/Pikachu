@@ -182,6 +182,8 @@ public class TileManager : Singleton<TileManager>
                     
                     if (CheckPathExits(posA, posB))
                     {
+                        idleTimer = 0f;
+                        ClearHint();
                         ProcessMatch(tiles[posA.y, posA.x], tiles[posB.y, posB.x]);
                         return;
                     }
@@ -223,6 +225,8 @@ public class TileManager : Singleton<TileManager>
         }
         
         SetTilesMatrix(shuffleTiles);
+        idleTimer = 0f;
+        ClearHint();
         HandleDeadlock();
     }
     private void ShowHintIfAvailable()
