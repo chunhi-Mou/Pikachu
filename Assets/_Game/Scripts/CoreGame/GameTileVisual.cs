@@ -8,7 +8,7 @@ public class GameTileVisual : MonoBehaviour
     [Header("Components")]
     [SerializeField] Animator tileAnimator;
     [SerializeField] private SpriteRenderer tileIcon;
-    [SerializeField] private new Collider2D collider2D;
+    [SerializeField] private Collider2D collider2D;
     
     [Header("Effects")]
     [SerializeField] private GameObject vfxPrefab;
