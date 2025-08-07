@@ -21,11 +21,13 @@ public class TileManager : Singleton<TileManager>
     private void OnEnable()
     {
         GameEvents.OnValidPairClicked += ProcessMatch;
+        GameEvents.OnUserClicked += ClearHint;
     }
 
     private void OnDisable()
     {
         GameEvents.OnValidPairClicked -= ProcessMatch;
+        GameEvents.OnUserClicked -= ClearHint;
     }
     private void Awake()
     {
@@ -182,7 +184,6 @@ public class TileManager : Singleton<TileManager>
                     
                     if (CheckPathExits(posA, posB))
                     {
-                        idleTimer = 0f;
                         ClearHint();
                         ProcessMatch(tiles[posA.y, posA.x], tiles[posB.y, posB.x]);
                         return;
@@ -225,7 +226,6 @@ public class TileManager : Singleton<TileManager>
         }
         
         SetTilesMatrix(shuffleTiles);
-        idleTimer = 0f;
         ClearHint();
         HandleDeadlock();
     }
@@ -270,6 +270,7 @@ public class TileManager : Singleton<TileManager>
     }
     private void ClearHint()
     {
+        idleTimer = 0f;
         if (cacheHint1 != null)
         {
             cacheHint1.StopHint();
@@ -286,7 +287,6 @@ public class TileManager : Singleton<TileManager>
     #region Match Logic
     private void ProcessMatch(GameTile tileA, GameTile tileB)
     {
-        idleTimer = 0f;
         ClearHint();
         if (CheckPathExits(tileA.Position, tileB.Position))
         {

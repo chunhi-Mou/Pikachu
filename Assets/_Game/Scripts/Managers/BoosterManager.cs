@@ -24,9 +24,10 @@ public class BoosterManager : Singleton<BoosterManager>
     public bool TryUseShuffle()
     {
         if (currentShuffleUse <= 0) return false;
-
+        
         currentShuffleUse--;
         OnShuffleCountChanged?.Invoke(currentShuffleUse);
+        GameEvents.OnUserClicked?.Invoke();
         
         SoundManager.Instance.PlayFx(FxID.Shuffle);
         TileManager.Instance.ShuffleTiles();
@@ -39,6 +40,7 @@ public class BoosterManager : Singleton<BoosterManager>
 
         currentHintUse--;
         OnHintCountChanged?.Invoke(currentHintUse);
+        GameEvents.OnUserClicked?.Invoke();
         
         SoundManager.Instance.PlayFx(FxID.Hint);
         TileManager.Instance.FindHintPair();

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 // Nhận Input của Player và Chuyển Sang Vị trí Cell -> Thông báo cho TileManager
@@ -30,6 +31,7 @@ public class SelectTileInput : MonoBehaviour
     }
     private void HandleTileClicked (Vector2 worldPosition)
     {
+        StartCoroutine(DelayedTrigger(0.2f));
         Vector2 cellSize = LevelManager.Instance.CellSize;
         Vector3 origin = LevelManager.Instance.Origin;
         Vector2Int cellPos = GridUtils.WorldToGrid(cellSize, origin, worldPosition);
@@ -64,5 +66,11 @@ public class SelectTileInput : MonoBehaviour
                 tile2 = null;
             }
         }
+    }
+
+    IEnumerator DelayedTrigger(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        GameEvents.OnUserClicked?.Invoke();
     }
 }
