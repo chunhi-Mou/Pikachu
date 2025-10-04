@@ -1,7 +1,5 @@
 ## Dự Án Game: Pikachu
 
-[<img src="https://github.com/user-attachments/assets/dabe4f53-fcfb-4e3f-bdd8-a8ebdddf2423" alt="CLB Nhà Sáng Tạo Game PTIT Logo" width="30"/> **CLB Nhà Sáng Tạo Game PTIT**](https://www.facebook.com/gamecreatorsclub)
-
 **Thời gian phát triển:** 07/2025 - 08/2025
 
 **Vai trò:** Unity Developer (Dự án team - trong CLB Nhà Sáng Tạo Game PTIT)
