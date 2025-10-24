@@ -2,7 +2,7 @@
 
 **Thời gian phát triển:** 07/2025 - 08/2025
 
-**Vai trò:** Unity Developer (Dự án team - trong CLB Nhà Sáng Tạo Game PTIT)
+**Vai trò:** Unity Developer
 
 **Xem gameplay tại đây:**
 
